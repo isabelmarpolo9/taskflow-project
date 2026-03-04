@@ -80,6 +80,11 @@ aside ul li:hover {
   background-color: #2a2a35;
   color: var(--color-acento);
 }
+.filtro-aside.active {
+  background-color: #2a2a35;
+  color: var(--color-acento);
+}
+
 main {
   flex: 1;
   padding: var(--espaciado-lg);

@@ -18,9 +18,10 @@
         <aside>
             <p>Mis listas</p>
             <ul>
-                <li>Todas</li>
-                <li>Hoy</li>
-                <li>Completadas</li>
+                <li class="filtro-aside active" data-filtro="todas">Todas</li>
+                <li class="filtro-aside" data-filtro="trabajo">Trabajo</li>
+                <li class="filtro-aside" data-filtro="estudio">Estudio</li>
+                <li class="filtro-aside" data-filtro="personal">Personal</li>
             </ul>
         </aside>
 
@@ -29,7 +30,21 @@
             <h2>En progreso</h2>
             <div class="formulario-nueva-tarea">
                 <input type="text" id="input-tarea" placeholder="¿Qué hay que hacer?">
+                <select id="select-categoria">
+                    <option value="trabajo">Trabajo</option>
+                    <option value="estudio">Estudio</option>
+                    <option value="personal">Personal</option>
+                </select>
+                <select id="select-prioridad">
+                    <option value="alta">Alta</option>
+                    <option value="media">Media</option>
+                    <option value="baja">Baja</option>
+                </select>
                 <button id="btn-añadir">Añadir tarea</button>
+            </div>
+
+            <div class="buscador">
+                <input type="text" id="input-busqueda" placeholder="Buscar tarea...">
             </div>
 
             <div id="contenedor-tareas"></div>
