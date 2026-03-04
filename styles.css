@@ -1,0 +1,70 @@
+:root {
+  --color-fondo: #0f0f13;
+  --color-tarjeta: #18181f;
+  --color-acento: #a78bfa;
+  --color-texto: #f1f0f5;
+  --espaciado-sm: 0.75rem;
+  --espaciado-md: 1.25rem;
+  --espaciado-lg: 2rem;
+  --radio-borde: 12px;
+  --fuente-titulo: 'Fraunces', serif;
+  --fuente-cuerpo: 'DM Sans', sans-serif;
+}
+body {
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: var(--fuente-cuerpo);
+}
+header {
+  background-color: var(--color-tarjeta);
+  padding: var(--espaciado-md) var(--espaciado-lg);
+  border-bottom: 1px solid #2a2a35;
+}
+
+header h1 {
+  font-family: var(--fuente-titulo);
+  font-size: 2rem;
+  color: var(--color-acento);
+}
+.layout {
+  display: flex;
+}
+
+aside {
+  width: 220px;
+  background-color: var(--color-tarjeta);
+  padding: var(--espaciado-md);
+  border-right: 1px solid #2a2a35;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+  padding: var(--espaciado-lg);
+}
+.tarea {
+  display: flex;
+  align-items: center;
+  gap: var(--espaciado-sm);
+  background-color: var(--color-tarjeta);
+  padding: var(--espaciado-md);
+  border-radius: var(--radio-borde);
+  margin-bottom: var(--espaciado-sm);
+  transition: transform 0.2s ease, background-color 0.3s ease;
+  border: 1px solid #2a2a35;
+}
+.tarea:hover {
+  transform: translateY(-3px);
+  background-color: #1e1e28;
+}
+.badge-alta  { background: #f871711a; color: #f87171; }
+.badge-media { background: #fbbf241a; color: #fbbf24; }
+.badge-baja  { background: #34d3991a; color: #34d399; }
+@media (max-width: 768px) {
+  .layout {
+    flex-direction: column;
+  }
+  aside {
+    width: 100%;
+  }
+}
