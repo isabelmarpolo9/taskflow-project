@@ -27,48 +27,19 @@
     <main>
         <section>
             <h2>En progreso</h2>
-            <div class="filtros">
-                <button class="filtro-btn active">Todas</button>
-                <button class="filtro-btn">Trabajo</button>
-                <button class="filtro-btn">Estudio</button>
-                <button class="filtro-btn">Personal</button>
-            </div>
-            <div class="selector-prioridad">
-                <select class="select-prioridad">
-                    <option value="">Todas las prioridades</option>
-                    <option value="alta">Alta</option>
-                    <option value="media">Media</option>
-                    <option value="baja">Baja</option>
-                </select>
+            <div class="formulario-tarea">
+                <input type="text" id="task-input" placeholder="¿Qué hay que hacer?">
+    
+                <button id="add-btn">Añadir Tarea</button>
             </div>
 
-            <div class="tarea">
-                <div class="tarea-cuerpo">
-                <span class="tarea-titulo">Diseñar la landing page</span>
-                <span class="tarea-categoria">Trabajo</span>
-                </div>
-                <span class="badge badge-alta">Alta</span>
-            </div>
-
-            <div class="tarea">
-                <div class="tarea-cuerpo">
-                <span class="tarea-titulo">Revisar ejercicios de HTML y CSS</span>
-                <span class="tarea-categoria">Estudio</span>
-                </div>
-                <span class="badge badge-media">Media</span>
-            </div>
-
-            <div class="tarea">
-                <div class="tarea-cuerpo">
-                <span class="tarea-titulo">Hacer la compra semanal</span>
-                <span class="tarea-categoria">Personal</span>
-                </div>
-                <span class="badge badge-baja">Baja</span>
-            </div>
+            <div id="contenedor-tareas"></div>
 
             </section>
     </main>
 
     </div>
+
+    <script src="app.js"></script>
 </body>
 </html>

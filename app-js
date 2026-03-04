@@ -1,0 +1,40 @@
+const input = document.getElementById('task-input'); 
+const boton = document.getElementById('add-btn');     
+const lista = document.getElementById('contenedor-tareas');
+
+let tareas = JSON.parse(localStorage.getItem('mis_tareas')) || [];
+
+renderizarTareas();
+
+function renderizarTareas() {
+    lista.innerHTML = '';
+
+    tareas.forEach((textoTarea, indice) => {
+        const divTarea = document.createElement('div');
+        divTarea.className = 'tarea';
+        divTarea.innerHTML = `
+            <div class="tarea-cuerpo">
+                <span class="tarea-titulo">${textoTarea}</span>
+            </div>
+            <button class="btn-eliminar" onclick="eliminarTarea(${indice})">Eliminar</button>
+        `;
+        lista.appendChild(divTarea);
+    });
+    localStorage.setItem('mis_tareas', JSON.stringify(tareas));
+}
+//BOTON PARA AÑADIR TAREAS
+add-btn.addEventListener('click', () => {
+    const texto = input.value.trim(); 
+
+    if (texto !== "") { 
+        tareas.push(texto);   
+        input.value = '';    
+        renderizarTareas();   
+    }
+});
+
+//FUNCION PARA ELIMINAR TAREAS
+function eliminarTarea(posicion) {
+    tareas.splice(posicion, 1);
+    renderizarTareas();
+}
