@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tareas</title>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
     <header>
         <h1>Tareas</h1>
+        <p>Organiza tus tareas de manera eficiente</p>
     </header>
 
     <div class="layout">
@@ -26,6 +27,20 @@
     <main>
         <section>
             <h2>En progreso</h2>
+            <div class="filtros">
+                <button class="filtro-btn active">Todas</button>
+                <button class="filtro-btn">Trabajo</button>
+                <button class="filtro-btn">Estudio</button>
+                <button class="filtro-btn">Personal</button>
+            </div>
+            <div class="selector-prioridad">
+                <select class="select-prioridad">
+                    <option value="">Todas las prioridades</option>
+                    <option value="alta">Alta</option>
+                    <option value="media">Media</option>
+                    <option value="baja">Baja</option>
+                </select>
+            </div>
 
             <div class="tarea">
                 <div class="tarea-cuerpo">
