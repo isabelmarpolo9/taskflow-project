@@ -1,60 +1,99 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tareas</title>
+    <title>Gestión de Tareas</title>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=5">
+    <link rel="stylesheet" href="output.css">
 </head>
-<body>
-    <header>
-        <div class="header-titulo">
-            <span class="header-icono">✦</span>
-            <h1>Gestión de Tareas</h1>
+<body class="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans min-h-screen">
+
+    <!-- HEADER -->
+    <header class="bg-gray-900 border-b border-gray-800 px-8 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+            <span class="text-purple-400 text-xl">✦</span>
+            <h1 class="text-2xl font-bold text-gray-100" style="font-family: 'Fraunces', serif;">
+                Gestión de Tareas
+            </h1>
         </div>
-        <p>Organiza tus tareas de manera eficiente</p>
+        <p class="text-sm text-gray-500">Organiza tu día a día</p>
+
+        <!-- Botón modo oscuro/claro -->
+        <button id="btn-tema" class="bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 rounded-full px-4 py-1 text-sm cursor-pointer transition-all duration-200">
+            🌙 Modo claro
+        </button>
     </header>
 
-    <div class="layout">
+    <!-- LAYOUT -->
+    <div class="flex min-h-screen">
 
-        <aside>
-            <p>Mis listas</p>
-            <ul>
-                <li class="filtro-aside active" data-filtro="todas">Todas</li>
-                <li class="filtro-aside" data-filtro="trabajo">Trabajo</li>
-                <li class="filtro-aside" data-filtro="estudio">Estudio</li>
-                <li class="filtro-aside" data-filtro="personal">Personal</li>
-            </ul>
+        <!-- ASIDE -->
+        <aside class="w-56 bg-gray-900 border-r border-gray-800 p-5 flex flex-col gap-6">
+            <div>
+                <p class="text-xs font-bold uppercase tracking-widest text-gray-600 mb-3">Mis listas</p>
+                <ul class="flex flex-col gap-1">
+                    <li class="filtro-aside active px-3 py-2 rounded-md text-gray-400 cursor-pointer transition-all duration-200 hover:bg-purple-900/20 hover:text-purple-400" data-filtro="todas">📋 Todas</li>
+                    <li class="filtro-aside px-3 py-2 rounded-md text-gray-400 cursor-pointer transition-all duration-200 hover:bg-purple-900/20 hover:text-purple-400" data-filtro="trabajo">💼 Trabajo</li>
+                    <li class="filtro-aside px-3 py-2 rounded-md text-gray-400 cursor-pointer transition-all duration-200 hover:bg-purple-900/20 hover:text-purple-400" data-filtro="estudio">📚 Estudio</li>
+                    <li class="filtro-aside px-3 py-2 rounded-md text-gray-400 cursor-pointer transition-all duration-200 hover:bg-purple-900/20 hover:text-purple-400" data-filtro="personal">🏠 Personal</li>
+                </ul>
+            </div>
         </aside>
 
-    <main>
-        <section>
-            <h2>En progreso</h2>
+        <!-- MAIN -->
+        <main class="flex-1 p-8">
+            <section>
+                <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-6">En progreso</h2>
+                
 
-            <div class="buscador">
-                <input type="text" id="input-busqueda" placeholder="Buscar tarea...">
-            </div>
-            
-            <div class="formulario-nueva-tarea">
-                <input type="text" id="input-tarea" placeholder="¿Qué hay que hacer?">
-                <select id="select-categoria">
-                    <option value="trabajo">Trabajo</option>
-                    <option value="estudio">Estudio</option>
-                    <option value="personal">Personal</option>
-                </select>
-                <select id="select-prioridad">
-                    <option value="alta">Alta</option>
-                    <option value="media">Media</option>
-                    <option value="baja">Baja</option>
-                </select>
-                <button id="btn-añadir">Añadir tarea</button>
-            </div>
+                <!-- BUSCADOR -->
+                <div class="mb-4">
+                    <input 
+                        type="text" 
+                        id="input-busqueda" 
+                        placeholder="Buscar tarea..." 
+                        class="bg-gray-900 border border-gray-700 text-gray-200 rounded-xl px-4 py-2 text-sm outline-none w-72 transition-all duration-200 focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                    >
+                </div>
 
-            <div id="contenedor-tareas"></div>
+                <!-- FORMULARIO -->
+                <div class="flex gap-3 mb-6 flex-wrap">
+                    <input 
+                        type="text" 
+                        id="input-tarea" 
+                        placeholder="¿Qué hay que hacer?" 
+                        class="bg-gray-900 border border-gray-700 text-gray-200 rounded-xl px-4 py-2 text-sm outline-none flex-1 min-w-48 transition-all duration-200 focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                    >
+                    <select 
+                        id="select-categoria" 
+                        class="bg-gray-900 border border-gray-700 text-gray-200 rounded-xl px-4 py-2 text-sm outline-none cursor-pointer transition-all duration-200 focus:border-purple-500"
+                    >
+                        <option value="trabajo">Trabajo</option>
+                        <option value="estudio">Estudio</option>
+                        <option value="personal">Personal</option>
+                    </select>
+                    <select 
+                        id="select-prioridad" 
+                        class="bg-gray-900 border border-gray-700 text-gray-200 rounded-xl px-4 py-2 text-sm outline-none cursor-pointer transition-all duration-200 focus:border-purple-500"
+                    >
+                        <option value="alta">Alta</option>
+                        <option value="media">Media</option>
+                        <option value="baja">Baja</option>
+                    </select>
+                    <button 
+                        id="btn-añadir" 
+                        class="bg-purple-600 hover:bg-purple-500 text-white rounded-xl px-5 py-2 text-sm font-medium cursor-pointer transition-all duration-200 hover:-translate-y-0.5"
+                    >
+                        Añadir tarea
+                    </button>
+                </div>
+
+                <!-- CONTENEDOR TAREAS -->
+                <div id="contenedor-tareas" class="flex flex-col gap-3"></div>
 
             </section>
-    </main>
+        </main>
 
     </div>
 

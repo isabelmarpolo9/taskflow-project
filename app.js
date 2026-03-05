@@ -45,15 +45,21 @@ function renderizarTareas() {
     : tareas.filter(t => t.categoria === filtroActivo)
 
   tareasFiltradas.forEach(tarea => {
+    const badgeClases = {
+      alta: 'bg-red-500/20 text-red-400 border border-red-500/40 px-3 py-1 rounded-full text-xs font-bold uppercase',
+      media: 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/40 px-3 py-1 rounded-full text-xs font-bold uppercase',
+      baja: 'bg-green-500/20 text-green-400 border border-green-500/40 px-3 py-1 rounded-full text-xs font-bold uppercase'
+    }
+
     const div = document.createElement('div')
-    div.classList.add('tarea')
+    div.className = 'flex items-center gap-4 bg-gray-900 border border-gray-800 rounded-xl px-4 py-3 transition-all duration-200 hover:-translate-y-0.5 hover:border-purple-700'
     div.innerHTML = `
-      <div class="tarea-cuerpo">
-        <span class="tarea-titulo">${tarea.texto}</span>
-        <span class="tarea-categoria">${tarea.categoria}</span>
+      <div class="flex flex-col flex-1">
+        <span class="text-sm text-gray-200">${tarea.texto}</span>
+        <span class="text-xs text-gray-500 mt-0.5">${tarea.categoria}</span>
       </div>
-      <span class="badge badge-${tarea.prioridad}">${tarea.prioridad}</span>
-      <button class="btn-eliminar" onclick="eliminarTarea(${tarea.id})">✕</button>
+      <span class="text-xs font-bold uppercase px-2 py-0.5 rounded-full ${badgeClases[tarea.prioridad]}">${tarea.prioridad}</span>
+      <button onclick="eliminarTarea(${tarea.id})" class="text-gray-600 hover:text-red-400 transition-colors duration-200 cursor-pointer">✕</button>
     `
     contenedorTareas.appendChild(div)
   })
@@ -113,4 +119,19 @@ filtrosAside.forEach(filtro => {
     filtroActivo = filtro.dataset.filtro
     renderizarTareas()
   })
+})
+
+// Modo oscuro/claro
+const btnTema = document.getElementById('btn-tema')
+
+btnTema.addEventListener('click', function() {
+  const html = document.documentElement
+  
+  if (html.classList.contains('dark')) {
+    html.classList.remove('dark')
+    btnTema.textContent = '🌙 Modo oscuro'
+  } else {
+    html.classList.add('dark')
+    btnTema.textContent = '☀️ Modo claro'
+  }
 })
