@@ -9,7 +9,10 @@
 </head>
 <body>
     <header>
-        <h1>Tareas</h1>
+        <div class="header-titulo">
+            <span class="header-icono">✦</span>
+            <h1>Gestión de Tareas</h1>
+        </div>
         <p>Organiza tus tareas de manera eficiente</p>
     </header>
 
@@ -28,6 +31,11 @@
     <main>
         <section>
             <h2>En progreso</h2>
+
+            <div class="buscador">
+                <input type="text" id="input-busqueda" placeholder="Buscar tarea...">
+            </div>
+            
             <div class="formulario-nueva-tarea">
                 <input type="text" id="input-tarea" placeholder="¿Qué hay que hacer?">
                 <select id="select-categoria">
@@ -41,10 +49,6 @@
                     <option value="baja">Baja</option>
                 </select>
                 <button id="btn-añadir">Añadir tarea</button>
-            </div>
-
-            <div class="buscador">
-                <input type="text" id="input-busqueda" placeholder="Buscar tarea...">
             </div>
 
             <div id="contenedor-tareas"></div>

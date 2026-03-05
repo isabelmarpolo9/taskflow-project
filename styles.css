@@ -22,6 +22,18 @@ header {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  background: linear-gradient(135deg, #1a1025, #0f0f13);
+}
+
+.header-titulo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.header-icono {
+  color: var(--color-acento);
+  font-size: 1.5rem;
 }
 
 header h1 {
@@ -177,4 +189,70 @@ main {
   aside {
     width: 100%;
   }
+}
+
+.formulario-nueva-tarea {
+  display: flex;
+  gap: var(--espaciado-sm);
+  margin-bottom: var(--espaciado-md);
+  flex-wrap: wrap;
+}
+
+.formulario-nueva-tarea input,
+.formulario-nueva-tarea select {
+  background-color: var(--color-tarjeta);
+  border: 1px solid #2a2a35;
+  color: var(--color-texto);
+  border-radius: var(--radio-borde);
+  padding: 0.5rem 1rem;
+  font-family: var(--fuente-cuerpo);
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.formulario-nueva-tarea input:focus,
+.formulario-nueva-tarea select:focus {
+  border-color: var(--color-acento);
+}
+
+.formulario-nueva-tarea input {
+  flex: 1;
+  min-width: 200px;
+}
+
+.formulario-nueva-tarea button {
+  background: linear-gradient(135deg, var(--color-acento), #7c3aed);
+  color: #fff;
+  border: none;
+  border-radius: var(--radio-borde);
+  padding: 0.5rem 1.2rem;
+  font-family: var(--fuente-cuerpo);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.formulario-nueva-tarea button:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.buscador input {
+  background-color: var(--color-tarjeta);
+  border: 1px solid #2a2a35;
+  color: var(--color-texto);
+  border-radius: var(--radio-borde);
+  padding: 0.5rem 1rem;
+  font-family: var(--fuente-cuerpo);
+  font-size: 0.85rem;
+  outline: none;
+  width: 300px;
+  margin-bottom: var(--espaciado-md);
+  transition: border-color 0.2s ease;
+}
+
+.buscador input:focus {
+  border-color: var(--color-acento);
 }

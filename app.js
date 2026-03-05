@@ -5,6 +5,8 @@ const contenedorTareas = document.getElementById('contenedor-tareas')
 const selectCategoria = document.getElementById('select-categoria')
 const selectPrioridad = document.getElementById('select-prioridad')
 
+let filtroActivo = 'todas'
+
 // Array donde guardaremos las tareas
 let tareas = []
 
@@ -101,7 +103,6 @@ inputBusqueda.addEventListener('input', function() {
 })
 
 // Filtro del aside
-let filtroActivo = 'todas'
 
 const filtrosAside = document.querySelectorAll('.filtro-aside')
 
