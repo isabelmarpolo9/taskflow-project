@@ -10,33 +10,42 @@
 <body class="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans min-h-screen">
 
     <!-- HEADER -->
-    <header class="bg-gray-900 border-b border-gray-800 px-8 py-4 flex items-center justify-between">
+    <header class="bg-gray-900 border-b border-gray-800 px-4 py-3 flex items-center justify-between flex-wrap gap-2">
         <div class="flex items-center gap-2">
             <span class="text-purple-400 text-xl">✦</span>
-            <h1 class="text-2xl font-bold text-gray-100" style="font-family: 'Fraunces', serif;">
+            <h1 class="text-xl font-bold text-gray-100" style="font-family: 'Fraunces', serif;">
                 Gestión de Tareas
             </h1>
         </div>
-        <p class="text-sm text-gray-500">Organiza tu día a día</p>
-
-        <!-- Botón modo oscuro/claro -->
-        <button id="btn-tema" class="bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 rounded-full px-4 py-1 text-sm cursor-pointer transition-all duration-200">
+        <button id="btn-tema" class="bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 rounded-full px-3 py-1 text-sm cursor-pointer transition-all duration-200">
             🌙 Modo claro
         </button>
     </header>
 
     <!-- LAYOUT -->
-    <div class="flex min-h-screen">
+    <div class="flex flex-col md:flex-row min-h-screen">
 
         <!-- ASIDE -->
-        <aside class="w-56 bg-gray-900 border-r border-gray-800 p-5 flex flex-col gap-6">
+        <aside class="w-full md:w-56 bg-gray-900 border-b md:border-b-0 md:border-r border-gray-800 p-4 flex flex-row md:flex-col gap-4 md:gap-6 overflow-x-auto">
             <div>
-                <p class="text-xs font-bold uppercase tracking-widest text-gray-600 mb-3">Mis listas</p>
-                <ul class="flex flex-col gap-1">
-                    <li class="filtro-aside active px-3 py-2 rounded-md text-gray-400 cursor-pointer transition-all duration-200 hover:bg-purple-900/20 hover:text-purple-400" data-filtro="todas">📋 Todas</li>
-                    <li class="filtro-aside px-3 py-2 rounded-md text-gray-400 cursor-pointer transition-all duration-200 hover:bg-purple-900/20 hover:text-purple-400" data-filtro="trabajo">💼 Trabajo</li>
-                    <li class="filtro-aside px-3 py-2 rounded-md text-gray-400 cursor-pointer transition-all duration-200 hover:bg-purple-900/20 hover:text-purple-400" data-filtro="estudio">📚 Estudio</li>
-                    <li class="filtro-aside px-3 py-2 rounded-md text-gray-400 cursor-pointer transition-all duration-200 hover:bg-purple-900/20 hover:text-purple-400" data-filtro="personal">🏠 Personal</li>
+                <p class="hidden md:block text-xs font-bold uppercase tracking-widest text-gray-600">Mis listas</p>
+                <ul class="flex flex-row md:flex-col gap-1 md:gap-1 w-full">
+                    <li class="filtro-aside active flex flex-col items-center md:flex-row gap-1 md:gap-2 px-3 py-2 rounded-md text-gray-400 cursor-pointer transition-all duration-200 hover:bg-purple-900/20 hover:text-purple-400" data-filtro="todas">
+                    <span>📋</span>
+                    <span class="text-xs md:text-base">Todas</span>
+                    </li>
+                    <li class="filtro-aside flex flex-col items-center md:flex-row gap-1 md:gap-2 px-3 py-2 rounded-md text-gray-400 cursor-pointer transition-all duration-200 hover:bg-purple-900/20 hover:text-purple-400" data-filtro="trabajo">
+                    <span>💼</span>
+                    <span class="text-xs md:text-base">Trabajo</span>
+                    </li>
+                    <li class="filtro-aside flex flex-col items-center md:flex-row gap-1 md:gap-2 px-3 py-2 rounded-md text-gray-400 cursor-pointer transition-all duration-200 hover:bg-purple-900/20 hover:text-purple-400" data-filtro="estudio">
+                    <span>📚</span>
+                    <span class="text-xs md:text-base">Estudio</span>
+                    </li>
+                    <li class="filtro-aside flex flex-col items-center md:flex-row gap-1 md:gap-2 px-3 py-2 rounded-md text-gray-400 cursor-pointer transition-all duration-200 hover:bg-purple-900/20 hover:text-purple-400" data-filtro="personal">
+                    <span>🏠</span>
+                    <span class="text-xs md:text-base">Personal</span>
+                    </li>
                 </ul>
             </div>
         </aside>
