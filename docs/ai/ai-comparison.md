@@ -705,7 +705,117 @@ En este caso em vuelve a gustar más el resutlado de Claude, aunque los dos est�
 ---
 
 ### Función 3
-[misma estructura]
+Encuentra y explica el error en esta función JavaScript:
+
+function multiplicar(numeros) {
+  let resultado = 0
+  for (let i = 0; i <= numeros.length; i++) {
+    resultado *= numeros[i]
+  }
+  return resultado
+}
+
+**Respuesta de Claude:**
+Hay dos errores en esta función:
+    Error 1 — Valor inicial incorrecto
+        let resultado = 0 // ❌ Multiplicar por 0 siempre da 0
+        let resultado = 1 // ✅ El neutro de la multiplicación es 1
+    Error 2 — Condición del bucle fuera de rango
+        for (let i = 0; i <= numeros.length; i++) // ❌ Accede a numeros[length] → undefined
+        for (let i = 0; i < numeros.length; i++)  // ✅ El último índice válido es length - 1
+En la última iteración, numeros[numeros.length] es undefined, y cualquier número multiplicado por undefined da NaN, corrompiendo el resultado.
+
+Función corregida
+    javascriptfunction multiplicar(numeros) {
+    let resultado = 1; // ✅ Neutro de la multiplicación
+    for (let i = 0; i < numeros.length; i++) { // ✅ < en lugar de <=
+        resultado *= numeros[i];
+    }
+    return resultado;
+    }
+
+    multiplicar([2, 3, 4]); // 24 ✅
+
+resultado = 0 0 × cualquier cosa = 0 Siempre devuelve 0
+i <= length Índice fuera de rango Introduce undefined → devuelve NaN
+
+**Respuesta de ChatGPT:**
+La función tiene dos errores de lógica en JavaScript.
+
+1️⃣ Error en el valor inicial
+    let resultado = 0
+
+    Para multiplicar números, el valor inicial debe ser 1, no 0.
+
+    ¿Por qué?
+    Porque cualquier número multiplicado por 0 da 0.
+
+    Ejemplo:
+
+    0 * 5 = 0
+    0 * 10 = 0
+
+    Por lo tanto, la función siempre devolverá 0.
+
+2️⃣ Error en la condición del for
+    for (let i = 0; i <= numeros.length; i++)
+
+    El problema es <=.
+
+    Los arrays empiezan en 0 y terminan en length - 1.
+
+    Si el array tiene 3 elementos:
+
+    indices: 0, 1, 2
+    length = 3
+
+    Pero el bucle intentará acceder a:
+
+    numeros[3]
+
+    Ese índice no existe, y devuelve undefined.
+
+Código incorrecto
+    function multiplicar(numeros) {
+    let resultado = 0
+    for (let i = 0; i <= numeros.length; i++) {
+        resultado *= numeros[i]
+    }
+    return resultado
+    }
+
+Código corregido
+    function multiplicar(numeros) {
+    let resultado = 1
+    for (let i = 0; i < numeros.length; i++) {
+        resultado *= numeros[i]
+    }
+    return resultado
+    }
+
+Ejemplo
+    multiplicar([2, 3, 4])
+
+Proceso:
+
+    1 * 2 = 2
+    2 * 3 = 6
+    6 * 4 = 24
+
+Resultado:
+
+    24
+
+✅ Resumen de errores
+
+    resultado debe empezar en 1, no en 0.
+
+    El for debe usar i < numeros.length, no <=.
+
+Si quieres, también puedo enseñarte la versión moderna con reduce(), que es la forma más típica de hacerlo en JavaScript hoy en día y que suele aparecer en entrevistas o ejercicios de DAM.
+
+**Conclusión:**
+Aunque las dos respuestas están igual de bien, me aprece que Claude es más breve y conciso explicando porq  ue está mal igual de bien.
 
 ---
 
@@ -717,23 +827,219 @@ En este caso em vuelve a gustar más el resutlado de Claude, aunque los dos est�
 > Escribe una función que reciba un array de números y devuelva solo los números pares
 
 **Respuesta de Claude:**
-[pega aquí el código generado]
+    function filtrarPares(numeros) {
+        return numeros.filter(n => n % 2 === 0);
+    }
+
+// Ejemplos
+filtrarPares([1, 2, 3, 4, 5, 6]); // [2, 4, 6]
+filtrarPares([11, 23, 8, 14, 7]); // [8, 14]
+filtrarPares([1, 3, 5]);          // []
+
+filter recorre el array y conserva solo los elementos donde la función devuelve true. El operador % (módulo) devuelve el resto de la división — si es 0, el número es par.
 
 **Respuesta de ChatGPT:**
-[pega aquí el código generado]
+Puedes hacerlo recorriendo el array y guardando solo los números que sean pares.
+
+Función en JavaScript
+function obtenerPares(numeros) {
+  let pares = []
+
+  for (let i = 0; i < numeros.length; i++) {
+    if (numeros[i] % 2 === 0) {
+      pares.push(numeros[i])
+    }
+  }
+
+  return pares
+}
+
+Ejemplo de uso
+    obtenerPares([1, 2, 3, 4, 5, 6])
+
+Resultado:
+
+    [2, 4, 6]
+
+Cómo funciona
+
+    Se crea un array vacío pares.
+
+    Se recorre el array numeros.
+
+    Se comprueba si el número es par usando % 2 === 0.
+
+    Si es par, se añade al array pares.
+
+    Al final se devuelve el array con los números pares.
+
+Versión más corta (muy usada)
+    function obtenerPares(numeros) {
+    return numeros.filter(n => n % 2 === 0)
+    }
+
+Aquí se usa filter, que devuelve solo los elementos que cumplen la condición.
+
+Si quieres, también puedo enseñarte 3 ejercicios muy típicos de examen de JavaScript con arrays (pares, suma total, número mayor) que suelen salir mucho en DAM.
 
 **Conclusión:**
-[escribe aquí cuál generó mejor código y por qué]
+Claude ha generado la función pedida tal cual y sin rodeos. ChatGPT ha explciado el por qué de cada paso, ha dado una segunda versión. Depende de para que lo estés buscando, si es porque estás aprendiendo usaría ChatGPT y si solo busco la función para usarla automáticamente usaría Claude.
 
 ---
 
 ### Función: Invertir palabras
-[misma estructura]
+
+**Prompt utilizado:**
+> Escribe una función JavaScript que reciba un string y devuelva las palabras en orden inverso
+
+**Respuesta de Claude:**
+function invertirPalabras(str) {
+  return str.split(" ").reverse().join(" ");
+}
+
+// Ejemplos
+invertirPalabras("Hola mundo cruel");   // "cruel mundo Hola"
+invertirPalabras("JavaScript es genial"); // "genial es JavaScript"
+invertirPalabras("una sola");            // "sola una"
+```
+
+Son tres pasos encadenados:
+
+| Paso | Método | Resultado |
+|---|---|---|
+| 1 | `split(" ")` | Convierte el string en array de palabras |
+| 2 | `reverse()` | Invierte el orden del array |
+| 3 | `join(" ")` | Une el array de vuelta en un string |
+
+Por ejemplo con `"Hola mundo cruel"`:
+```
+"Hola mundo cruel"
+  → ["Hola", "mundo", "cruel"]   // split
+  → ["cruel", "mundo", "Hola"]   // reverse
+  → "cruel mundo Hola"           // join
+
+**Respuesta de ChatGPT:**
+Puedes hacerlo separando las palabras del texto, invirtiendo el orden y volviendo a unirlas.
+
+Función en JavaScript
+    function invertirPalabras(texto) {
+    return texto.split(" ").reverse().join(" ");
+    }
+
+Ejemplo
+    invertirPalabras("Hola mundo desde JavaScript");
+
+    Resultado:
+
+    JavaScript desde mundo Hola
+
+Cómo funciona
+
+    split(" ") → divide el string en palabras (crea un array).
+
+    reverse() → invierte el orden del array.
+
+    join(" ") → vuelve a unir las palabras en un string.
+
+Paso a paso
+
+    Si el texto es:
+
+        "Hola mundo desde JavaScript"
+
+    Después de split:
+
+        ["Hola", "mundo", "desde", "JavaScript"]
+
+    Después de reverse:
+
+        ["JavaScript", "desde", "mundo", "Hola"]
+
+    Después de join:
+
+        "JavaScript desde mundo Hola"
+
+✅ Resultado final: las palabras aparecen en orden inverso.
+
+**Conclusión:**
+Han creado los dos la misma función pero parece que ChatGPT siemrpe da una explicación de ello y Claude siemrpe va más al grano.
 
 ---
 
 ### Función: Filtrar tareas por prioridad
-[misma estructura]
+
+**Prompt utilizado:**
+> Escribe una función JavaScript que reciba un array de tareas y devuelva solo las de prioridad alta, donde cada tarea es un objeto con las propiedades texto y prioridad
+
+**Respuesta de Claude:**
+function filtrarPrioridadAlta(tareas) {
+  return tareas.filter(tarea => tarea.prioridad === "alta");
+}
+
+// Ejemplos
+const tareas = [
+  { texto: "Comprar leche",        prioridad: "baja"  },
+  { texto: "Entregar informe",     prioridad: "alta"  },
+  { texto: "Llamar al médico",     prioridad: "alta"  },
+  { texto: "Ver Netflix",          prioridad: "baja"  },
+  { texto: "Pagar facturas",       prioridad: "media" },
+  { texto: "Preparar presentación",prioridad: "alta"  },
+];
+
+filtrarPrioridadAlta(tareas);
+// [
+//   { texto: "Entregar informe",      prioridad: "alta" },
+//   { texto: "Llamar al médico",      prioridad: "alta" },
+//   { texto: "Preparar presentación", prioridad: "alta" },
+// ]
+
+Igual que con números, filter recorre el array y conserva solo los elementos donde la condición es true — en este caso, los objetos cuya propiedad prioridad es exactamente "alta".
+
+Si quisieras hacerla más flexible para filtrar por cualquier prioridad:
+    function filtrarPorPrioridad(tareas, prioridad) {
+    return tareas.filter(tarea => tarea.prioridad === prioridad);
+    }
+
+filtrarPorPrioridad(tareas, "alta");  // 3 tareas
+filtrarPorPrioridad(tareas, "media"); // 1 tarea
+filtrarPorPrioridad(tareas, "baja");  // 2 tareas
+
+**Respuesta de ChatGPT:**
+Puedes filtrar las tareas cuyo campo prioridad sea "alta".
+
+Función en JavaScript
+    function tareasAltaPrioridad(tareas) {
+    return tareas.filter(tarea => tarea.prioridad === "alta");
+    }
+
+Ejemplo de uso
+    const tareas = [
+    { texto: "Hacer la compra", prioridad: "media" },
+    { texto: "Entregar proyecto", prioridad: "alta" },
+    { texto: "Limpiar casa", prioridad: "baja" },
+    { texto: "Estudiar JavaScript", prioridad: "alta" }
+    ];
+
+    console.log(tareasAltaPrioridad(tareas));
+
+Resultado
+    [
+    { texto: "Entregar proyecto", prioridad: "alta" },
+    { texto: "Estudiar JavaScript", prioridad: "alta" }
+    ]
+
+Cómo funciona
+
+    La función recibe un array tareas.
+
+    filter() recorre todos los elementos del array.
+
+    Solo devuelve las tareas cuya propiedad prioridad sea "alta".
+
+✅ Idea clave: filter() se usa para devolver solo los elementos que cumplen una condición.
+
+**Conclusión:**
+En este caso ambas han dado una función y una explicación. Para los dos la respuesta ha sido muy parecida.
 
 ---
 
@@ -741,12 +1047,12 @@ En este caso em vuelve a gustar más el resutlado de Claude, aunque los dos est�
 
 | Criterio | Claude | ChatGPT |
 |---|---|---|
-| Claridad de explicaciones | | |
-| Profundidad técnica | | |
-| Calidad del código generado | | |
-| Detección de errores | | |
-| Mejor para principiantes | | |
+| Claridad de explicaciones | Alta  | Alta |
+| Profundidad técnica | Alta | Media |
+| Calidad del código generado | Alta | Media |
+| Detección de errores | Alta | Alta |
+| Mejor para principiantes | Media | Alta |
 
 **Conclusión final:**
-[escribe aquí tu valoración global]
-```
+Claude resultó más útil para explicar conceptos con ejemplos claros y detectar errores con detalle. ChatGPT generó código funcional pero con menos explicaciones. Para aprender, prefiero Claude.
+
