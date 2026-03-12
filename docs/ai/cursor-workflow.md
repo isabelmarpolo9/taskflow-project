@@ -161,6 +161,91 @@ src/
 
 Cursor no solo corrige bugs puntuales sino que puede proponer una arquitectura mejor para todo el proyecto. En este caso dividió un archivo monolítico en módulos con responsabilidades claras, lo que hace el código más fácil de mantener y entender. Es importante revisar manualmente cada cambio antes de aceptarlo para asegurarse de que no rompe nada.
 
+---
+
+## Conexión con servidor MCP
+
+### ¿Qué es MCP?
+
+El **Model Context Protocol** es un protocolo creado por Anthropic que permite a los asistentes de IA conectarse con herramientas externas como el sistema de archivos, GitHub, bases de datos, etc. En lugar de solo responder preguntas, la IA puede ejecutar acciones reales sobre el proyecto.
+
+### Instalación del servidor filesystem en Cursor
+
+**Paso 1** — Abre Cursor y ve a **Settings → Tools & MCP**
+
+**Paso 2** — Haz clic en **Add new MCP server**
+
+**Paso 3** — Añade esta configuración:
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\Users\\Alex\\OneDrive\\Escritorio\\Taskflow"
+      ]
+    }
+  }
+}
+```
+
+**Paso 4** — Guarda y reinicia Cursor
+
+---
+
+### Cinco consultas realizadas con MCP
+
+**Consulta 1: Listar archivos del proyecto**
+> Lista todos los archivos del proyecto
+
+Cursor listó todos los archivos organizados por grupos. Detectó más de 1300 archivos en total incluyendo `node_modules`, y los agrupó correctamente separando las dependencias del código propio del proyecto.
+
+---
+
+**Consulta 2: Leer el contenido de app.js**
+> Lee el contenido de app.js
+
+Cursor leyó directamente el archivo `src/app.js` y mostró su contenido completo, incluyendo los imports de los módulos, los tipos JSDoc, las funciones `readAndValidateForm()`, `render()`, `updateFormState()` y `onAddTask()`, y todos los event listeners.
+
+---
+
+**Consulta 3: Contar líneas de index.html**
+> ¿Cuántas líneas tiene index.html?
+
+Cursor respondió que `index.html` tiene **118 líneas**.
+
+---
+
+**Consulta 4: Ver archivos de documentación**
+> ¿Qué archivos hay dentro de la carpeta docs/ai?
+
+Cursor listó correctamente los cinco archivos de documentación:
+- `experiments.md`
+- `reflection.md`
+- `ai-comparison.md`
+- `cursor-workflow.md`
+- `prompt-engineering.md`
+
+---
+
+**Consulta 5: Ver funciones exportadas**
+> ¿Qué funciones exporta src/tasks.js?
+
+Cursor listó las nueve funciones exportadas por el módulo:
+`loadTasks`, `saveTasks`, `isPriority`, `isCategory`, `validateTaskText`, `filterTasks`, `hasDuplicateTask`, `createTask`, `removeTask`
+
+---
+
+### ¿En qué casos es útil MCP en proyectos reales?
+
+- **Navegar proyectos grandes** sin tener que abrir cada archivo manualmente
+- **Auditar código** preguntando directamente qué exporta cada módulo o cuántas líneas tiene cada archivo
+- **Buscar dependencias** entre archivos sin leer el código entero
+- **Automatizar tareas repetitivas** como renombrar archivos, mover carpetas o crear estructuras de directorios
+- **Integración con GitHub** para consultar issues, pull requests o el historial de commits directamente desde el chat
+
 ## Conclusión
 
 Cursor ha resultado útil especialmente para detectar bugs que no eran evidentes a simple vista, como el problema del buscador que no encontraba elementos porque las clases del DOM no coincidían. La edición inline y el chat contextual permiten iterar sobre el código de forma rápida sin salir del editor.
