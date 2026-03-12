@@ -9,6 +9,8 @@ En este documento se comparan las diferentes herramientas de inteligencia artifi
 - Casos en los que una IA fue más útil que otra
 - Ejemplos concretos de prompts y sus resultados
 
+---
+
 # Comparativa entre asistentes de IA
 
 Comparativa entre Claude y ChatGPT evaluando claridad, profundidad y calidad de código.
@@ -23,145 +25,130 @@ Comparativa entre Claude y ChatGPT evaluando claridad, profundidad y calidad de 
 
 > Explícame qué es un closure en JavaScript con un ejemplo práctico y sencillo
 
-**Respuesta de Claude:**
+---
+
+#### Respuesta de Claude
+
 Un closure es una función que "recuerda" las variables del entorno donde fue creada, incluso después de que ese entorno haya dejado de ejecutarse.
 
-La idea clave
+**La idea clave**
+
 Cuando defines una función dentro de otra función, la función interna tiene acceso a las variables de la función externa. Ese acceso persiste aunque la función externa ya haya terminado.
 
-Ejemplo práctico: un contador
-javascriptfunction crearContador() {
-let cuenta = 0; // Variable en el ámbito externo
+**Ejemplo práctico: un contador**
+
+```javascript
+function crearContador() {
+    let cuenta = 0;
 
     return function () {
         cuenta++;
         return cuenta;
     };
-    }
+}
 
-    const contador = crearContador();
+const contador = crearContador();
 
-    console.log(contador()); // 1
-    console.log(contador()); // 2
-    console.log(contador()); // 3
+console.log(contador()); // 1
+console.log(contador()); // 2
+console.log(contador()); // 3
+```
 
-Lo interesante aquí: crearContador() ya terminó de ejecutarse, pero la variable cuenta sigue viva porque la función interna la está "sosteniendo". Eso es un closure.
+`crearContador()` ya terminó de ejecutarse, pero la variable `cuenta` sigue viva porque la función interna la está "sosteniendo". Eso es un closure.
 
-¿Por qué es útil? 1. Datos privados — cuenta no es accesible desde fuera, solo a través de la función retornada. 2. Cada instancia es independiente:
-javascriptconst contadorA = crearContador();
+**¿Por qué es útil?**
+
+1. **Datos privados** — `cuenta` no es accesible desde fuera, solo a través de la función retornada.
+2. **Cada instancia es independiente:**
+
+```javascript
+const contadorA = crearContador();
 const contadorB = crearContador();
 
-        contadorA(); // 1
-        contadorA(); // 2
-        contadorB(); // 1  ← su propio "cuenta", separado
+contadorA(); // 1
+contadorA(); // 2
+contadorB(); // 1  ← su propio "cuenta", separado
+```
 
-3.  Funciones con memoria, como cachés, configuraciones o fábricas de funciones:
-    javascriptfunction multiplicador(factor) {
-    return (numero) => numero \* factor;
-    }
+3. **Funciones con memoria**, como cachés, configuraciones o fábricas de funciones:
 
-        const doble = multiplicador(2);
-        const triple = multiplicador(3);
+```javascript
+function multiplicador(factor) {
+    return (numero) => numero * factor;
+}
 
-        doble(5);  // 10
-        triple(5); // 15
+const doble = multiplicador(2);
+const triple = multiplicador(3);
 
-En resumen
+doble(5);  // 10
+triple(5); // 15
+```
 
-- ¿Qué es? Una función + las variables de su entorno de creación
-- ¿Cuándo ocurre? Cuando una función interna accede a variables de una función externa
-- ¿Para qué sirve?Encapsular estado, crear datos privados, funciones con memoria
+**En resumen**
 
-El closure no es una sintaxis especial, es simplemente una consecuencia natural de cómo JavaScript maneja el alcance de las variables. Cada vez que devuelves una función que usa variables externas, estás creando uno.
+| | |
+|---|---|
+| ¿Qué es? | Una función + las variables de su entorno de creación |
+| ¿Cuándo ocurre? | Cuando una función interna accede a variables de una función externa |
+| ¿Para qué sirve? | Encapsular estado, crear datos privados, funciones con memoria |
 
-**Respuesta de ChatGPT:**
-Un closure (cierre) en JavaScript es cuando una función recuerda las variables que estaban en su entorno aunque se ejecute fuera de él.
+---
 
-Es decir:
+#### Respuesta de ChatGPT
+
+Un closure en JavaScript es cuando una función recuerda las variables que estaban en su entorno aunque se ejecute fuera de él.
+
 👉 Una función puede usar variables de la función donde fue creada, incluso después de que esa función haya terminado.
 
-Ejemplo sencillo
+**Ejemplo sencillo**
+
+```javascript
 function contador() {
-let numero = 0;
+    let numero = 0;
 
     return function () {
         numero++;
         console.log(numero);
     };
-    }
+}
 
-    const contar = contador();
+const contar = contador();
 
-    contar(); // 1
-    contar(); // 2
-    contar(); // 3
+contar(); // 1
+contar(); // 2
+contar(); // 3
+```
 
-Qué está pasando
+**Explicado fácil**
 
-    Se ejecuta contador().
+Un closure es como una mochila de variables que una función lleva consigo. La función que se devuelve se lleva en la mochila la variable `numero` y puede seguir usándola.
 
-    Dentro se crea la variable numero.
+**Ejemplo práctico real: contador de clics**
 
-    contador() devuelve otra función.
-
-    Esa función recuerda la variable numero, aunque contador() ya haya terminado.
-
-    Por eso cada vez que llamamos a contar():
-
-    la variable no se reinicia
-
-    sigue guardada en memoria.
-
-Explicado fácil
-
-    Un closure es como una mochila de variables que una función lleva consigo.
-
-    La función que se devuelve se lleva en la mochila la variable numero y puede seguir usándola.
-
-Ejemplo práctico real (muy típico)
-
-Contador de clics en una web:
-
-    function crearContadorClicks() {
+```javascript
+function crearContadorClicks() {
     let clicks = 0;
 
     return function () {
         clicks++;
         return clicks;
     };
-    }
+}
 
-    const contarClicks = crearContadorClicks();
+const contarClicks = crearContadorClicks();
 
-    console.log(contarClicks()); // 1
-    console.log(contarClicks()); // 2
-    console.log(contarClicks()); // 3
+console.log(contarClicks()); // 1
+console.log(contarClicks()); // 2
+console.log(contarClicks()); // 3
+```
 
-Esto sirve para:
+> ✅ **Idea clave:** Un closure es una función que puede acceder a las variables de su ámbito externo incluso después de que ese ámbito haya terminado de ejecutarse.
 
-    contadores
+---
 
-    datos privados
+#### Conclusión
 
-    funciones que recuerdan estado
-
-    callbacks
-
-✅ Idea clave para examen o entrevistas:
-
-    Un closure es una función que puede acceder a las variables de su ámbito externo incluso después de que ese ámbito haya terminado de ejecutarse.
-
-Si quieres, también puedo enseñarte:
-
-    el típico closure que siempre cae en exámenes de DAM
-
-    un ejemplo donde mucha gente se equivoca (con var en bucles).
-
-**Conclusión:**
-Aunque ambos han dado explicaciones muy parecidas, la que ha dado Chat gpt me ha parecido más fácil de entender por estar explicada de una forma más cercana,
-con un lenguaje aunque igual de correcto, quizás un poco más cercano.
-Los ejemplos que han dado son prácticamente los mismos aunque creo que Claude luego ha dado alguno un poco más complejo.
-Me ha gustado un poco más el de Chat gpt por la cercanía de la explciación y el poner ejemplos con otros casos similares.
+Aunque ambos han dado explicaciones muy parecidas, la de ChatGPT me ha parecido más fácil de entender por estar explicada de una forma más cercana, con un lenguaje quizás un poco más accesible. Los ejemplos que han dado son prácticamente los mismos aunque Claude luego ha dado alguno un poco más complejo. Me ha gustado un poco más el de ChatGPT por la cercanía de la explicación y el poner ejemplos con otros casos similares.
 
 ---
 
@@ -171,36 +158,27 @@ Me ha gustado un poco más el de Chat gpt por la cercanía de la explciación y 
 
 > Explícame qué es el Event Loop en JavaScript con un ejemplo práctico y sencillo
 
-**Respuesta de Claude:**
+---
+
+#### Respuesta de Claude
+
 El Event Loop es el mecanismo que permite a JavaScript ejecutar código asíncrono a pesar de ser un lenguaje de un solo hilo. Es lo que hace que tu página no se congele mientras espera una respuesta del servidor.
 
-Las piezas del sistema
-┌─────────────────────┐
-│ Call Stack │ ← Donde se ejecuta el código (1 cosa a la vez)
-└─────────────────────┘
-↑
-┌─────────────────────┐
-│ Event Loop │ ← El vigilante: mueve tareas al stack cuando está vacío
-└─────────────────────┘
-↑ ↑
-┌────────┐ ┌──────────────┐
-│Microtask│ │ Task Queue │ ← Callbacks de setTimeout, eventos, etc.
-│ Queue │ │ │
-│(Promises)│ └──────────────┘
-└────────┘
-Ejemplo paso a paso
-javascriptconsole.log("1 - Inicio");
+**Ejemplo paso a paso**
 
-    setTimeout(() => {
+```javascript
+console.log("1 - Inicio");
+
+setTimeout(() => {
     console.log("2 - setTimeout");
-    }, 0);
+}, 0);
 
-    Promise.resolve().then(() => {
+Promise.resolve().then(() => {
     console.log("3 - Promise");
-    });
+});
 
-    console.log("4 - Fin");
-    ```
+console.log("4 - Fin");
+```
 
 **Resultado en consola:**
 
@@ -211,336 +189,155 @@ javascriptconsole.log("1 - Inicio");
 2 - setTimeout
 ```
 
-¿Por qué ese orden? Así lo procesa JavaScript:
+**¿Por qué ese orden?**
 
-| Paso | Qué pasa                                                                  |
-| ---- | ------------------------------------------------------------------------- |
-| 1    | Ejecuta `console.log("1")` → stack                                        |
-| 2    | Registra el `setTimeout` → va a la Task Queue                             |
-| 3    | Registra la `Promise` → va a la Microtask Queue                           |
-| 4    | Ejecuta `console.log("4")` → stack                                        |
-| 5    | Stack vacío → Event Loop revisa **primero** microtareas → ejecuta Promise |
-| 6    | Microtareas vacías → revisa Task Queue → ejecuta setTimeout               |
+| Paso | Qué pasa |
+|------|----------|
+| 1 | Ejecuta `console.log("1")` → stack |
+| 2 | Registra el `setTimeout` → va a la Task Queue |
+| 3 | Registra la `Promise` → va a la Microtask Queue |
+| 4 | Ejecuta `console.log("4")` → stack |
+| 5 | Stack vacío → Event Loop revisa **primero** microtareas → ejecuta Promise |
+| 6 | Microtareas vacías → revisa Task Queue → ejecuta setTimeout |
 
-## La regla de oro
+**La regla de oro:** `Call Stack → Microtask Queue → Task Queue`
+
+Las microtareas (Promises) siempre tienen prioridad sobre las tareas (setTimeout, setInterval).
+
+---
+
+#### Respuesta de ChatGPT
+
+El Event Loop decide cuándo se ejecuta cada tarea. JavaScript solo puede ejecutar una cosa a la vez, pero gracias al Event Loop puede manejar tareas que tardan tiempo sin bloquear el programa.
+
+**Ejemplo sencillo**
+
+```javascript
+console.log("Inicio");
+
+setTimeout(() => {
+    console.log("Hola");
+}, 2000);
+
+console.log("Fin");
+```
+
+Resultado real:
 
 ```
-Call Stack → Microtask Queue → Task Queue
-Las microtareas (Promises, queueMicrotask) siempre tienen prioridad sobre las tareas (setTimeout, setInterval, eventos del DOM).
-Ejemplo real: por qué no debes bloquear el hilo
-javascript// ❌ Esto congela el navegador ~3 segundos
-function tareaLenta() {
-  const fin = Date.now() + 3000;
-  while (Date.now() < fin) {} // Bloquea el Call Stack
-  console.log("Listo");
-}
+Inicio
+Fin
+Hola
+```
 
-// ✅ Esto libera el hilo entre iteraciones
-async function tareaSana() {
-  await fetch("https://api.ejemplo.com/datos");
-  console.log("Listo"); // Se ejecuta cuando el stack está libre
-}
+Muchos esperarían ver `Hola` en segundo lugar, pero el `setTimeout` se delega al navegador y el código sigue ejecutándose. Solo cuando el stack está vacío y han pasado los 2 segundos, se ejecuta el callback.
 
-En el primer caso, el Event Loop no puede procesar nada más (ni clics, ni animaciones) mientras el while ocupa el stack.
+> ✅ **Definición corta:** El Event Loop es el mecanismo de JavaScript que gestiona la ejecución de código asíncrono, moviendo funciones desde la cola de callbacks al call stack cuando este queda libre.
 
-En resumen
-- Call Stack Ejecuta el código sincrónico, una cosa a la vez
-- Task Queue Guarda callbacks de setTimeout, eventos, etc.
-- Microtask QueueGuarda callbacks de Promises (prioridad alta)
-- Event LoopVigila el stack y mueve tareas cuando está vacío
+---
 
-La clave es entender que JavaScript no hace varias cosas a la vez, sino que las intercala muy rápido gracias a este sistema. El Event Loop es el director de orquesta que decide qué se ejecuta y cuándo
+#### Conclusión
 
-**Respuesta de ChatGPT:**
-El Event Loop en JavaScript es el mecanismo que permite ejecutar código asíncrono, es decir, tareas que no se ejecutan inmediatamente (como temporizadores, peticiones a servidores, etc.).
-
-En palabras simples:
-
-👉 El Event Loop decide cuándo se ejecuta cada tarea.
-
-JavaScript solo puede ejecutar una cosa a la vez, pero gracias al Event Loop puede manejar tareas que tardan tiempo sin bloquear el programa.
-
-Cómo funciona (idea simple)
-
-    Hay tres elementos:
-
-    Call Stack (pila)
-    Donde se ejecuta el código normal.
-
-    Web APIs
-    Donde el navegador gestiona cosas que tardan tiempo (como setTimeout).
-
-    Callback Queue
-    Donde esperan las funciones que se ejecutarán después.
-
-    El Event Loop revisa constantemente:
-
-    “¿La pila está vacía? Entonces saco la siguiente función de la cola y la ejecuto.”
-
-Ejemplo sencillo
-    console.log("Inicio");
-
-    setTimeout(() => {
-    console.log("Hola");
-    }, 2000);
-
-    console.log("Fin");
-
-¿Qué crees que se imprime?
-
-    Muchos piensan:
-
-    Inicio
-    Hola
-    Fin
-
-    Pero en realidad sale:
-
-    Inicio
-    Fin
-    Hola
-
-Por qué pasa esto
-
-    1️⃣ console.log("Inicio") → se ejecuta inmediatamente
-
-    2️⃣ setTimeout → el temporizador se manda a Web APIs
-
-    3️⃣ console.log("Fin") → se ejecuta
-
-    4️⃣ Pasan 2 segundos
-
-    5️⃣ La función "Hola" entra en la cola de callbacks
-
-    6️⃣ El Event Loop ve que la pila está libre y ejecuta:
-
-    Hola
-
-Esquema rápido
-    Call Stack        Web APIs          Callback Queue
-    ----------        --------          ---------------
-    console.log
-    setTimeout   ->   temporizador
-    console.log
-                                    -> función "Hola"
-
-    Event Loop → cuando la pila queda vacía ejecuta "Hola"
-
-Ejemplo práctico real
-
-    Mostrar un mensaje después de cargar algo:
-
-    console.log("Cargando datos...");
-
-    setTimeout(() => {
-    console.log("Datos cargados");
-    }, 3000);
-
-    Salida:
-
-    Cargando datos...
-    (3 segundos después)
-    Datos cargados
-
-    El programa no se queda bloqueado esperando.
-
-✅ Definición corta (perfecta para examen DAM):
-
-    El Event Loop es el mecanismo de JavaScript que gestiona la ejecución de código asíncrono, moviendo funciones desde la cola de callbacks al call stack cuando este queda libre.
-
-Si quieres, también puedo enseñarte el ejemplo clásico que siempre confunde a la gente con Promise y setTimeout, que es la típica pregunta de examen o entrevista.
-
-**Conclusión:**
-Ene ste caso también me ha gustado más la explicación de Chat gpt ya que la veo más cercana, explciada de forma más simple. También Te pone ejemplos y luego te explica esos mismos ejemplos.
+En este caso también me ha gustado más la explicación de ChatGPT ya que la veo más cercana, explicada de forma más simple. También pone ejemplos y luego los explica paso a paso.
 
 ---
 
 ### Concepto: DOM
 
 **Prompt utilizado:**
+
 > Explícame qué es el DOM en JavaScript con un ejemplo práctico y sencillo
 
-**Respuesta de Claude:**
+---
+
+#### Respuesta de Claude
+
 El DOM (Document Object Model) es la representación en memoria del HTML de tu página. JavaScript lo usa para leer y modificar el contenido, la estructura y el estilo de forma dinámica.
 
-La idea clave
-    Cuando el navegador carga tu HTML, lo convierte en un árbol de objetos llamado DOM. Cada etiqueta HTML se convierte en un nodo que puedes manipular con JavaScript.
-    HTML                          DOM (árbol de nodos)
-─────────────────             ────────────────────────────
-<html>                              document
-  <body>                               │
-    <h1>Hola</h1>           ┌──────────┴──────────┐
-    <ul>                  <body>              ...
-      <li>Item 1</li>       │
-      <li>Item 2</li>   ┌───┴────────┐
-    </ul>              <h1>         <ul>
-  </body>               │            │
-</html>               "Hola"    ┌────┴────┐
-                              <li>      <li>
-                             "Item1"  "Item 2"
+Cuando el navegador carga tu HTML, lo convierte en un árbol de objetos llamado DOM. Cada etiqueta HTML se convierte en un nodo que puedes manipular con JavaScript.
 
-Seleccionar elementos
-    javascript// Por ID → devuelve 1 elemento
-    const titulo = document.getElementById("titulo");
+**Seleccionar elementos**
 
-    // Por clase → devuelve una colección
-    const items = document.querySelectorAll(".item");
+```javascript
+const titulo = document.getElementById("titulo");
+const items = document.querySelectorAll(".item");
+const boton = document.querySelector("button");
+```
 
-    // Por selector CSS → devuelve el primero que encuentre
-    const boton = document.querySelector("button");
+**Leer y modificar contenido**
 
-Leer y modificar contenido
-    javascriptconst titulo = document.getElementById("titulo");
+```javascript
+titulo.textContent = "Nuevo título";
+titulo.innerHTML = "<em>Título</em> con cursiva";
+titulo.style.color = "red";
+titulo.classList.add("activo");
+titulo.classList.toggle("resaltado");
+```
 
-    // Leer
-    console.log(titulo.textContent); // "Hola mundo"
+**Ejemplo práctico: lista dinámica**
 
-    // Modificar texto
-    titulo.textContent = "Nuevo título";
+```html
+<input id="input" placeholder="Escribe un item..." />
+<button id="btn">Agregar</button>
+<ul id="lista"></ul>
+```
 
-    // Modificar HTML interno
-    titulo.innerHTML = "<em>Título</em> con cursiva";
+```javascript
+const input = document.getElementById("input");
+const boton = document.getElementById("btn");
+const lista = document.getElementById("lista");
 
-    // Modificar estilos
-    titulo.style.color = "red";
-    titulo.style.fontSize = "2rem";
-
-    // Modificar clases
-    titulo.classList.add("activo");
-    titulo.classList.remove("oculto");
-    titulo.classList.toggle("resaltado");
-
-Ejemplo práctico: lista dinámica
-    html<input id="input" placeholder="Escribe un item..." />
-    <button id="btn">Agregar</button>
-    <ul id="lista"></ul>
-    javascriptconst input = document.getElementById("input");
-    const boton = document.getElementById("btn");
-    const lista = document.getElementById("lista");
-
-    boton.addEventListener("click", () => {
+boton.addEventListener("click", () => {
     if (!input.value.trim()) return;
-
-    // Crear nuevo nodo <li>
     const nuevoItem = document.createElement("li");
     nuevoItem.textContent = input.value;
-
-    // Insertarlo en el DOM
     lista.appendChild(nuevoItem);
-
-    // Limpiar el input
     input.value = "";
-    });
+});
+```
 
-Cada vez que haces clic, JavaScript crea un nodo, lo rellena con texto y lo añade al árbol del DOM. El navegador refleja el cambio al instante.
+**Operaciones más comunes**
 
-Las operaciones más comunes
-- Seleccionar: querySelector, getElementById
-- Crear: createElement
-- Insertar: appendChild, prepend, insertBefore
-- Eliminarelement.remove()
-- Escuchar eventos: EventListener
-- Leer/escribir textotextContent, innerHTMLCambiar clasesclassList.add/remove/toggleCambiar estiloselement.style.propiedad
+| Operación | Métodos |
+|-----------|---------|
+| Seleccionar | `querySelector`, `getElementById` |
+| Crear | `createElement` |
+| Insertar | `appendChild`, `prepend`, `insertBefore` |
+| Eliminar | `element.remove()` |
+| Escuchar eventos | `addEventListener` |
+| Leer/escribir texto | `textContent`, `innerHTML` |
+| Cambiar clases | `classList.add/remove/toggle` |
+| Cambiar estilos | `element.style.propiedad` |
 
-En resumen
-    El DOM es el puente entre tu HTML y JavaScript. Sin él, JavaScript no podría hacer nada visible en la página. Todo lo interactivo que ves en una web (menús, formularios, animaciones) es JavaScript manipulando el DOM en respuesta a eventos del usuario
+---
 
-**Respuesta de ChatGPT:**
-El DOM (Document Object Model) es la representación del HTML de una página como un árbol de objetos que JavaScript puede modificar.
+#### Respuesta de ChatGPT
 
-En otras palabras:
+El DOM permite que JavaScript lea y cambie el contenido de una página web escrita en HTML.
 
-👉 El DOM permite que JavaScript lea y cambie el contenido de una página web escrita en HTML.
+**Ejemplo práctico sencillo**
 
-Idea sencilla
+```html
+<h1 id="titulo">Hola</h1>
+<button onclick="cambiarTexto()">Cambiar</button>
+```
 
-    Cuando el navegador carga una página HTML, convierte el HTML en una estructura de objetos.
+```javascript
+function cambiarTexto() {
+    document.getElementById("titulo").textContent = "Hola JavaScript";
+}
+```
 
-Ejemplo de HTML:
+Cuando pulsas el botón, JavaScript busca el elemento con id `titulo` en el DOM y cambia su contenido.
 
-    <h1 id="titulo">Hola mundo</h1>
-    <button>Cambiar texto</button>
+> ✅ **Definición corta:** El DOM es una representación del documento HTML como una estructura de objetos que permite a JavaScript acceder y modificar los elementos de una página web.
 
-El navegador lo transforma en un árbol DOM:
+---
 
-    document
-    └── html
-        └── body
-            ├── h1
-            └── button
+#### Conclusión
 
-    Cada elemento se convierte en un objeto que JavaScript puede manipular.
+En este caso Claude me ha dado más ejemplos y me ha explicado más claro. ChatGPT noto que se ha quedado un poco escaso.
 
-Ejemplo práctico sencillo
-
-    HTML:
-
-        <h1 id="titulo">Hola</h1>
-        <button onclick="cambiarTexto()">Cambiar</button>
-
-    JavaScript:
-
-        function cambiarTexto() {
-        document.getElementById("titulo").textContent = "Hola JavaScript";
-        }
-
-Qué pasa cuando pulsas el botón
-
-    JavaScript busca el elemento con id "titulo" en el DOM.
-
-    Cambia su contenido.
-
-    Resultado en la página:
-
-    Hola
-    ↓
-    Hola JavaScript
-
-Lo que hace cada parte
-    document.getElementById("titulo")
-
-    document → representa toda la página
-
-    getElementById → busca un elemento en el DOM
-
-    .textContent
-
-    cambia el texto del elemento.
-
-Otro ejemplo muy típico
-
-    Cambiar el color de un texto:
-
-    document.getElementById("titulo").style.color = "red";
-
-    El DOM permite modificar:
-
-        texto
-
-        estilos
-
-        atributos
-
-        elementos HTML
-
-        eventos
-
-Definición corta (perfecta para examen)
-
-    El DOM es una representación del documento HTML como una estructura de objetos que permite a JavaScript acceder y modificar los elementos de una página web.
-
-✅ En resumen
-
-    DOM = la forma en que JavaScript controla la página web.
-
-Si quieres, también puedo enseñarte:
-
-    el esquema visual del DOM que suelen pedir en exámenes
-
-    las 5 funciones del DOM más usadas (querySelector, createElement, etc.) que aparecen mucho en prácticas de DAM.
-
-**Conclusión:**
-En este caso Claude me ha dado más ejemplos y me ha explicado más claro. Chat gpt noto que se ha quedado un poco escaso.
 ---
 
 ## 2. Detección de errores en código
@@ -548,274 +345,199 @@ En este caso Claude me ha dado más ejemplos y me ha explicado más claro. Chat 
 ### Función 1
 
 **Prompt utilizado:**
-> Encuentra y explica el error en esta función JavaScript: 
-    function sumar(a, b) {
-        return a - b
-    }
 
-**Respuesta de Claude:**
-El error es simple: la función se llama sumar pero usa el operador - en lugar de +.
-❌ Incorrecto
-    function sumar(a, b) {
-        return a - b; // Resta en vez de sumar
-    }
+> Encuentra y explica el error en esta función JavaScript:
+> ```javascript
+> function sumar(a, b) {
+>   return a - b
+> }
+> ```
+
+---
+
+#### Respuesta de Claude
+
+El error es simple: la función se llama `sumar` pero usa el operador `-` en lugar de `+`.
+
+```javascript
+// ❌ Incorrecto
+function sumar(a, b) {
+    return a - b; // Resta en vez de sumar
+}
 
 // ✅ Correcto
-    function sumar(a, b) {
-        return a + b;
-    }
-
-sumar(3, 2) con el código original devuelve 1 en lugar de 5. Un error de lógica clásico: el código es sintácticamente válido (JavaScript no se queja), pero produce resultados incorrectos.
-
-**Respuesta de ChatGPT:**
-Exacto. Ese es un error de lógica en JavaScript.
-
-El código no tiene errores de sintaxis, por lo que el intérprete lo ejecuta sin problemas, pero la operación que realiza no es la que se esperaba.
-
-Código incorrecto
-    function sumar(a, b) {
-    return a - b; // usa resta
-    }
-
-    Si ejecutamos:
-
-        sumar(3, 2);
-
-    Resultado:
-
-        1
-
-    Porque realmente está haciendo:
-
-        3 - 2 = 1
-
-Código correcto
-    function sumar(a, b) {
+function sumar(a, b) {
     return a + b;
-    }
+}
+```
 
-    Ahora:
+`sumar(3, 2)` con el código original devuelve `1` en lugar de `5`. Un error de lógica clásico: el código es sintácticamente válido pero produce resultados incorrectos.
 
-        sumar(3, 2);
+---
 
-    Resultado:
+#### Respuesta de ChatGPT
 
-        5
+El código no tiene errores de sintaxis, pero la operación que realiza no es la esperada.
 
-Tipo de error
+```javascript
+// ❌ Incorrecto
+function sumar(a, b) {
+    return a - b; // usa resta → sumar(3, 2) = 1
+}
 
-    Este caso es un error de lógica porque:
+// ✅ Correcto
+function sumar(a, b) {
+    return a + b; // sumar(3, 2) = 5
+}
+```
 
-    ✔ La sintaxis es válida
+**Tipo de error:** error de lógica — la sintaxis es válida, el programa se ejecuta, pero el resultado es incorrecto.
 
-    ✔ El programa se ejecuta
+---
 
-    ❌ El resultado es incorrecto
+#### Conclusión
 
-Tipos de errores en programación (resumen)
-
-    Errores de sintaxis
-        El código no puede ejecutarse.
-
-        function sumar(a, b {
-        return a + b;
-        }
-
-    Errores de ejecución
-        Ocurren mientras el programa se ejecuta.
-
-    Errores de lógica
-        El programa funciona pero el resultado es incorrecto (como tu ejemplo).
-
-✅ Conclusión
-
-    Tu ejemplo es un caso típico donde el programa funciona técnicamente, pero la lógica implementada no corresponde con el objetivo de la función.
-
-**Conclusión:**
-En este caso me gusta más la explicación de Claude porque aunque als dos están bien explicadas, considero que Chat gpt ha dado más vueltas y más información pra explicarlo. Claude ha sido más breve y la explicación se ha entendido a la primera igual de bien. 
+En este caso me gusta más la explicación de Claude porque, aunque las dos están bien explicadas, ChatGPT ha dado más vueltas para explicarlo. Claude ha sido más breve y la explicación se ha entendido a la primera igual de bien.
 
 ---
 
 ### Función 2
-Encuentra y explica el error en esta función JavaScript:
 
+**Prompt utilizado:**
+
+> Encuentra y explica el error en esta función JavaScript:
+> ```javascript
+> function saludar(nombre) {
+>   console.log("Hola " + Nombre)
+> }
+> ```
+
+---
+
+#### Respuesta de Claude
+
+El error está en que `Nombre` con mayúscula no existe — la variable se llama `nombre` en minúscula.
+
+```javascript
+// ❌ Incorrecto
 function saludar(nombre) {
-  console.log("Hola " + Nombre)
+    console.log("Hola " + Nombre); // ReferenceError: Nombre is not defined
 }
 
-**Respuesta de Claude:**
-
-El error es el mismo que en el ejemplo anterior: Nombre con mayúscula no existe, la variable se llama nombre en minúscula.
-❌ Incorrecto
-    function saludar(nombre) {
-    console.log("Hola " + Nombre); // ReferenceError: Nombre is not defined
-    }
-
 // ✅ Correcto
-    function saludar(nombre) {
+function saludar(nombre) {
     console.log("Hola " + nombre);
-    }
-JavaScript es case-sensitive: nombre y Nombre son variables distintas. Como Nombre nunca fue declarada, el programa lanza un ReferenceError en tiempo de ejecución.
+}
+```
 
-**Respuesta de ChatGPT:**
-El error está en el nombre de la variable usada dentro de la función.
+JavaScript es **case-sensitive**: `nombre` y `Nombre` son variables distintas. Como `Nombre` nunca fue declarada, el programa lanza un `ReferenceError` en tiempo de ejecución.
 
-Código con error
-    function saludar(nombre) {
-    console.log("Hola " + Nombre)
-    }
+---
 
-Problema
+#### Respuesta de ChatGPT
 
-    La función recibe un parámetro llamado:
+La función recibe un parámetro llamado `nombre` pero dentro de `console.log` se utiliza `Nombre`. En JavaScript las mayúsculas y minúsculas distinguen variables, por lo que `nombre ≠ Nombre`. JavaScript intentará usar `Nombre`, pero esa variable nunca fue declarada y aparecerá:
 
-        nombre
+```
+ReferenceError: Nombre is not defined
+```
 
-    pero dentro de console.log se utiliza:
-
-    Nombre
-
-En JavaScript el lenguaje es case-sensitive, lo que significa que mayúsculas y minúsculas distinguen variables.
-
-Por tanto:
-
-    nombre ≠ Nombre
-
-JavaScript intentará usar la variable Nombre, pero esa variable nunca fue declarada, por lo que al ejecutar la función aparecerá este error:
-
-    ReferenceError: Nombre is not defined
-
-Código corregido
-    function saludar(nombre) {
+```javascript
+// ✅ Correcto
+function saludar(nombre) {
     console.log("Hola " + nombre);
-    }
+}
 
-Ejemplo de ejecución
-    saludar("Ana");
+saludar("Ana"); // Hola Ana
+```
 
-    Resultado:
+---
 
-        Hola Ana
+#### Conclusión
 
-✅ Conclusión:
-    El error se debe a usar Nombre en lugar de nombre. Como JavaScript distingue entre mayúsculas y minúsculas, la variable Nombre no existe y provoca un ReferenceError en tiempo de ejecución.
+Me vuelve a gustar más el resultado de Claude. Aunque los dos están bien explicados, ChatGPT da más vueltas y Claude lo explica de forma mucho más concisa y brevemente, entendiéndose igual de bien.
 
-**Conclusión:**
-En este caso em vuelve a gustar más el resutlado de Claude, aunque los dos están bien explicados, Chat GPT da más vueltas y CLaude me parece que lo explcia de forma mucho más concisa y brevemente y se entiende iguald e bien.
 ---
 
 ### Función 3
-Encuentra y explica el error en esta función JavaScript:
 
+**Prompt utilizado:**
+
+> Encuentra y explica el error en esta función JavaScript:
+> ```javascript
+> function multiplicar(numeros) {
+>   let resultado = 0
+>   for (let i = 0; i <= numeros.length; i++) {
+>     resultado *= numeros[i]
+>   }
+>   return resultado
+> }
+> ```
+
+---
+
+#### Respuesta de Claude
+
+Hay **dos errores** en esta función:
+
+**Error 1 — Valor inicial incorrecto**
+
+```javascript
+let resultado = 0 // ❌ Multiplicar por 0 siempre da 0
+let resultado = 1 // ✅ El neutro de la multiplicación es 1
+```
+
+**Error 2 — Condición del bucle fuera de rango**
+
+```javascript
+for (let i = 0; i <= numeros.length; i++) // ❌ Accede a numeros[length] → undefined
+for (let i = 0; i < numeros.length; i++)  // ✅ El último índice válido es length - 1
+```
+
+En la última iteración, `numeros[numeros.length]` es `undefined`, y cualquier número multiplicado por `undefined` da `NaN`.
+
+**Función corregida**
+
+```javascript
 function multiplicar(numeros) {
-  let resultado = 0
-  for (let i = 0; i <= numeros.length; i++) {
-    resultado *= numeros[i]
-  }
-  return resultado
-}
-
-**Respuesta de Claude:**
-Hay dos errores en esta función:
-    Error 1 — Valor inicial incorrecto
-        let resultado = 0 // ❌ Multiplicar por 0 siempre da 0
-        let resultado = 1 // ✅ El neutro de la multiplicación es 1
-    Error 2 — Condición del bucle fuera de rango
-        for (let i = 0; i <= numeros.length; i++) // ❌ Accede a numeros[length] → undefined
-        for (let i = 0; i < numeros.length; i++)  // ✅ El último índice válido es length - 1
-En la última iteración, numeros[numeros.length] es undefined, y cualquier número multiplicado por undefined da NaN, corrompiendo el resultado.
-
-Función corregida
-    javascriptfunction multiplicar(numeros) {
-    let resultado = 1; // ✅ Neutro de la multiplicación
-    for (let i = 0; i < numeros.length; i++) { // ✅ < en lugar de <=
+    let resultado = 1;
+    for (let i = 0; i < numeros.length; i++) {
         resultado *= numeros[i];
     }
     return resultado;
-    }
+}
 
-    multiplicar([2, 3, 4]); // 24 ✅
+multiplicar([2, 3, 4]); // 24 ✅
+```
 
-resultado = 0 0 × cualquier cosa = 0 Siempre devuelve 0
-i <= length Índice fuera de rango Introduce undefined → devuelve NaN
+---
 
-**Respuesta de ChatGPT:**
-La función tiene dos errores de lógica en JavaScript.
+#### Respuesta de ChatGPT
 
-1️⃣ Error en el valor inicial
-    let resultado = 0
+La función tiene dos errores de lógica:
 
-    Para multiplicar números, el valor inicial debe ser 1, no 0.
+**1️⃣ Valor inicial incorrecto** — `resultado = 0` hace que cualquier multiplicación dé siempre 0.
 
-    ¿Por qué?
-    Porque cualquier número multiplicado por 0 da 0.
+**2️⃣ Condición del bucle incorrecta** — `i <= numeros.length` intenta acceder a un índice que no existe, devolviendo `undefined`.
 
-    Ejemplo:
-
-    0 * 5 = 0
-    0 * 10 = 0
-
-    Por lo tanto, la función siempre devolverá 0.
-
-2️⃣ Error en la condición del for
-    for (let i = 0; i <= numeros.length; i++)
-
-    El problema es <=.
-
-    Los arrays empiezan en 0 y terminan en length - 1.
-
-    Si el array tiene 3 elementos:
-
-    indices: 0, 1, 2
-    length = 3
-
-    Pero el bucle intentará acceder a:
-
-    numeros[3]
-
-    Ese índice no existe, y devuelve undefined.
-
-Código incorrecto
-    function multiplicar(numeros) {
-    let resultado = 0
-    for (let i = 0; i <= numeros.length; i++) {
-        resultado *= numeros[i]
-    }
-    return resultado
-    }
-
-Código corregido
-    function multiplicar(numeros) {
+```javascript
+// ✅ Correcto
+function multiplicar(numeros) {
     let resultado = 1
     for (let i = 0; i < numeros.length; i++) {
         resultado *= numeros[i]
     }
     return resultado
-    }
+}
 
-Ejemplo
-    multiplicar([2, 3, 4])
+multiplicar([2, 3, 4]) // 24
+```
 
-Proceso:
+---
 
-    1 * 2 = 2
-    2 * 3 = 6
-    6 * 4 = 24
+#### Conclusión
 
-Resultado:
-
-    24
-
-✅ Resumen de errores
-
-    resultado debe empezar en 1, no en 0.
-
-    El for debe usar i < numeros.length, no <=.
-
-Si quieres, también puedo enseñarte la versión moderna con reduce(), que es la forma más típica de hacerlo en JavaScript hoy en día y que suele aparecer en entrevistas o ejercicios de DAM.
-
-**Conclusión:**
-Aunque las dos respuestas están igual de bien, me aprece que Claude es más breve y conciso explicando porq  ue está mal igual de bien.
+Aunque las dos respuestas están igual de bien, Claude es más breve y conciso explicando por qué está mal, con la misma claridad.
 
 ---
 
@@ -824,166 +546,124 @@ Aunque las dos respuestas están igual de bien, me aprece que Claude es más bre
 ### Función: Filtrar números pares
 
 **Prompt utilizado:**
+
 > Escribe una función que reciba un array de números y devuelva solo los números pares
 
-**Respuesta de Claude:**
-    function filtrarPares(numeros) {
-        return numeros.filter(n => n % 2 === 0);
-    }
+---
 
-// Ejemplos
+#### Respuesta de Claude
+
+```javascript
+function filtrarPares(numeros) {
+    return numeros.filter(n => n % 2 === 0);
+}
+
 filtrarPares([1, 2, 3, 4, 5, 6]); // [2, 4, 6]
 filtrarPares([11, 23, 8, 14, 7]); // [8, 14]
 filtrarPares([1, 3, 5]);          // []
+```
 
-filter recorre el array y conserva solo los elementos donde la función devuelve true. El operador % (módulo) devuelve el resto de la división — si es 0, el número es par.
+`filter` recorre el array y conserva solo los elementos donde la función devuelve `true`. El operador `%` (módulo) devuelve el resto de la división — si es 0, el número es par.
 
-**Respuesta de ChatGPT:**
-Puedes hacerlo recorriendo el array y guardando solo los números que sean pares.
+---
 
-Función en JavaScript
+#### Respuesta de ChatGPT
+
+```javascript
 function obtenerPares(numeros) {
-  let pares = []
-
-  for (let i = 0; i < numeros.length; i++) {
-    if (numeros[i] % 2 === 0) {
-      pares.push(numeros[i])
+    let pares = []
+    for (let i = 0; i < numeros.length; i++) {
+        if (numeros[i] % 2 === 0) {
+            pares.push(numeros[i])
+        }
     }
-  }
-
-  return pares
+    return pares
 }
 
-Ejemplo de uso
-    obtenerPares([1, 2, 3, 4, 5, 6])
-
-Resultado:
-
-    [2, 4, 6]
-
-Cómo funciona
-
-    Se crea un array vacío pares.
-
-    Se recorre el array numeros.
-
-    Se comprueba si el número es par usando % 2 === 0.
-
-    Si es par, se añade al array pares.
-
-    Al final se devuelve el array con los números pares.
-
-Versión más corta (muy usada)
-    function obtenerPares(numeros) {
+// Versión más corta
+function obtenerPares(numeros) {
     return numeros.filter(n => n % 2 === 0)
-    }
+}
+```
 
-Aquí se usa filter, que devuelve solo los elementos que cumplen la condición.
+---
 
-Si quieres, también puedo enseñarte 3 ejercicios muy típicos de examen de JavaScript con arrays (pares, suma total, número mayor) que suelen salir mucho en DAM.
+#### Conclusión
 
-**Conclusión:**
-Claude ha generado la función pedida tal cual y sin rodeos. ChatGPT ha explciado el por qué de cada paso, ha dado una segunda versión. Depende de para que lo estés buscando, si es porque estás aprendiendo usaría ChatGPT y si solo busco la función para usarla automáticamente usaría Claude.
+Claude ha generado la función directamente y sin rodeos. ChatGPT ha explicado el porqué de cada paso y ha dado además una segunda versión más moderna. Depende del objetivo: si estás aprendiendo, ChatGPT es más útil; si solo necesitas la función, Claude va más al grano.
 
 ---
 
 ### Función: Invertir palabras
 
 **Prompt utilizado:**
+
 > Escribe una función JavaScript que reciba un string y devuelva las palabras en orden inverso
 
-**Respuesta de Claude:**
+---
+
+#### Respuesta de Claude
+
+```javascript
 function invertirPalabras(str) {
-  return str.split(" ").reverse().join(" ");
+    return str.split(" ").reverse().join(" ");
 }
 
-// Ejemplos
-invertirPalabras("Hola mundo cruel");   // "cruel mundo Hola"
+invertirPalabras("Hola mundo cruel");    // "cruel mundo Hola"
 invertirPalabras("JavaScript es genial"); // "genial es JavaScript"
-invertirPalabras("una sola");            // "sola una"
 ```
 
 Son tres pasos encadenados:
 
 | Paso | Método | Resultado |
-|---|---|---|
+|------|--------|-----------|
 | 1 | `split(" ")` | Convierte el string en array de palabras |
 | 2 | `reverse()` | Invierte el orden del array |
 | 3 | `join(" ")` | Une el array de vuelta en un string |
 
-Por ejemplo con `"Hola mundo cruel"`:
-```
-"Hola mundo cruel"
-  → ["Hola", "mundo", "cruel"]   // split
-  → ["cruel", "mundo", "Hola"]   // reverse
-  → "cruel mundo Hola"           // join
+---
 
-**Respuesta de ChatGPT:**
-Puedes hacerlo separando las palabras del texto, invirtiendo el orden y volviendo a unirlas.
+#### Respuesta de ChatGPT
 
-Función en JavaScript
-    function invertirPalabras(texto) {
+```javascript
+function invertirPalabras(texto) {
     return texto.split(" ").reverse().join(" ");
-    }
+}
 
-Ejemplo
-    invertirPalabras("Hola mundo desde JavaScript");
+invertirPalabras("Hola mundo desde JavaScript");
+// "JavaScript desde mundo Hola"
+```
 
-    Resultado:
+---
 
-    JavaScript desde mundo Hola
+#### Conclusión
 
-Cómo funciona
-
-    split(" ") → divide el string en palabras (crea un array).
-
-    reverse() → invierte el orden del array.
-
-    join(" ") → vuelve a unir las palabras en un string.
-
-Paso a paso
-
-    Si el texto es:
-
-        "Hola mundo desde JavaScript"
-
-    Después de split:
-
-        ["Hola", "mundo", "desde", "JavaScript"]
-
-    Después de reverse:
-
-        ["JavaScript", "desde", "mundo", "Hola"]
-
-    Después de join:
-
-        "JavaScript desde mundo Hola"
-
-✅ Resultado final: las palabras aparecen en orden inverso.
-
-**Conclusión:**
-Han creado los dos la misma función pero parece que ChatGPT siemrpe da una explicación de ello y Claude siemrpe va más al grano.
+Los dos han creado la misma función. ChatGPT siempre da una explicación detallada de cada paso; Claude siempre va más al grano.
 
 ---
 
 ### Función: Filtrar tareas por prioridad
 
 **Prompt utilizado:**
+
 > Escribe una función JavaScript que reciba un array de tareas y devuelva solo las de prioridad alta, donde cada tarea es un objeto con las propiedades texto y prioridad
 
-**Respuesta de Claude:**
+---
+
+#### Respuesta de Claude
+
+```javascript
 function filtrarPrioridadAlta(tareas) {
-  return tareas.filter(tarea => tarea.prioridad === "alta");
+    return tareas.filter(tarea => tarea.prioridad === "alta");
 }
 
-// Ejemplos
 const tareas = [
-  { texto: "Comprar leche",        prioridad: "baja"  },
-  { texto: "Entregar informe",     prioridad: "alta"  },
-  { texto: "Llamar al médico",     prioridad: "alta"  },
-  { texto: "Ver Netflix",          prioridad: "baja"  },
-  { texto: "Pagar facturas",       prioridad: "media" },
-  { texto: "Preparar presentación",prioridad: "alta"  },
+    { texto: "Comprar leche",         prioridad: "baja"  },
+    { texto: "Entregar informe",      prioridad: "alta"  },
+    { texto: "Llamar al médico",      prioridad: "alta"  },
+    { texto: "Ver Netflix",           prioridad: "baja"  },
+    { texto: "Pagar facturas",        prioridad: "media" },
+    { texto: "Preparar presentación", prioridad: "alta"  },
 ];
 
 filtrarPrioridadAlta(tareas);
@@ -992,67 +672,44 @@ filtrarPrioridadAlta(tareas);
 //   { texto: "Llamar al médico",      prioridad: "alta" },
 //   { texto: "Preparar presentación", prioridad: "alta" },
 // ]
+```
 
-Igual que con números, filter recorre el array y conserva solo los elementos donde la condición es true — en este caso, los objetos cuya propiedad prioridad es exactamente "alta".
+Claude además ofreció una versión más flexible:
 
-Si quisieras hacerla más flexible para filtrar por cualquier prioridad:
-    function filtrarPorPrioridad(tareas, prioridad) {
+```javascript
+function filtrarPorPrioridad(tareas, prioridad) {
     return tareas.filter(tarea => tarea.prioridad === prioridad);
-    }
+}
+```
 
-filtrarPorPrioridad(tareas, "alta");  // 3 tareas
-filtrarPorPrioridad(tareas, "media"); // 1 tarea
-filtrarPorPrioridad(tareas, "baja");  // 2 tareas
+---
 
-**Respuesta de ChatGPT:**
-Puedes filtrar las tareas cuyo campo prioridad sea "alta".
+#### Respuesta de ChatGPT
 
-Función en JavaScript
-    function tareasAltaPrioridad(tareas) {
+```javascript
+function tareasAltaPrioridad(tareas) {
     return tareas.filter(tarea => tarea.prioridad === "alta");
-    }
+}
+```
 
-Ejemplo de uso
-    const tareas = [
-    { texto: "Hacer la compra", prioridad: "media" },
-    { texto: "Entregar proyecto", prioridad: "alta" },
-    { texto: "Limpiar casa", prioridad: "baja" },
-    { texto: "Estudiar JavaScript", prioridad: "alta" }
-    ];
+---
 
-    console.log(tareasAltaPrioridad(tareas));
+#### Conclusión
 
-Resultado
-    [
-    { texto: "Entregar proyecto", prioridad: "alta" },
-    { texto: "Estudiar JavaScript", prioridad: "alta" }
-    ]
-
-Cómo funciona
-
-    La función recibe un array tareas.
-
-    filter() recorre todos los elementos del array.
-
-    Solo devuelve las tareas cuya propiedad prioridad sea "alta".
-
-✅ Idea clave: filter() se usa para devolver solo los elementos que cumplen una condición.
-
-**Conclusión:**
-En este caso ambas han dado una función y una explicación. Para los dos la respuesta ha sido muy parecida.
+Ambas han dado una función y una explicación muy parecidas. Claude además ofreció una versión más genérica que filtra por cualquier prioridad.
 
 ---
 
 ## Conclusión general
 
 | Criterio | Claude | ChatGPT |
-|---|---|---|
-| Claridad de explicaciones | Alta  | Alta |
+|----------|--------|---------|
+| Claridad de explicaciones | Alta | Alta |
 | Profundidad técnica | Alta | Media |
 | Calidad del código generado | Alta | Media |
 | Detección de errores | Alta | Alta |
 | Mejor para principiantes | Media | Alta |
 
 **Conclusión final:**
-Claude resultó más útil para explicar conceptos con ejemplos claros y detectar errores con detalle. ChatGPT generó código funcional pero con menos explicaciones. Para aprender, prefiero Claude.
 
+Claude resultó más útil para explicar conceptos con ejemplos claros y detectar errores con detalle. ChatGPT generó código funcional pero con menos explicaciones. Para aprender, prefiero Claude.
