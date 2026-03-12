@@ -72,6 +72,10 @@
                         type="text" 
                         id="input-tarea" 
                         placeholder="¿Qué hay que hacer?" 
+                        minlength="1"
+                        maxlength="120"
+                        autocomplete="off"
+                        inputmode="text"
                         class="bg-gray-900 border border-gray-700 text-gray-200 rounded-xl px-4 py-2 text-sm outline-none flex-1 min-w-48 transition-all duration-200 focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
                     >
                     <select 
@@ -98,6 +102,9 @@
                     </button>
                 </div>
 
+                <!-- MENSAJES DE VALIDACIÓN -->
+                <p id="form-error" class="hidden text-sm text-red-400 mb-6" role="status" aria-live="polite"></p>
+
                 <!-- CONTENEDOR TAREAS -->
                 <div id="contenedor-tareas" class="flex flex-col gap-3"></div>
 
@@ -106,6 +113,6 @@
 
     </div>
 
-    <script src="app.js"></script>
+    <script type="module" src="src/app.js"></script>
 </body>
 </html>
