@@ -108,6 +108,58 @@ Cursor preparó el commit revisando el estado de los cambios, creó un mensaje d
 Cursor no solo genera código sino que también puede gestionar el flujo de trabajo con Git. Sin embargo, es importante revisar en qué rama está activo el proyecto antes de hacer push, ya que Vercel solo despliega automáticamente desde la rama configurada como producción (`main` o `master`).
 
 ---
+---
+
+## Ejemplo 3: Refactorización completa de TaskFlow
+
+### Prompt utilizado
+
+> Revisa todo el código de TaskFlow y detecta partes mejorables. Usa IA para refactorizar al menos cinco funciones, mejora nombres de variables, añade validaciones al formulario, simplifica funciones repetitivas y añade comentarios JSDoc.
+
+### Qué detectó Cursor
+
+Cursor analizó todos los archivos del proyecto (index.html, app.js, tailwind.config.js, input.css) y detectó los siguientes problemas:
+
+- `app.js` mezclaba UI, storage, lógica de negocio y tema en un solo archivo
+- Uso de `innerHTML` con texto introducido por el usuario (riesgo XSS)
+- Parsing de localStorage sin control de errores
+- Faltaban validaciones en el formulario (longitud, duplicados, valores inválidos)
+- Las clases del badge de prioridad estaban repetidas en varios sitios
+- Los event listeners estaban dispersos sin estructura clara
+
+### Cambios aplicados
+
+**Nueva estructura de archivos — separación en módulos ES:**
+```
+src/
+├── storage.js  → readJson(), writeJson()
+├── tasks.js    → loadTasks(), saveTasks(), validateTaskText(), filterTasks(), createTask(), removeTask()
+├── theme.js    → getInitialTheme(), applyTheme(), toggleTheme()
+├── ui.js       → renderTaskList(), showError(), clearError(), priorityBadgeClass()
+└── app.js      → orquestación (eventos, estado, render)
+```
+
+**Validaciones añadidas al formulario:**
+
+- Texto: trim + normalización de espacios, entre 1 y 120 caracteres
+- Categoría y prioridad: lista blanca de valores válidos (`trabajo|estudio|personal` y `alta|media|baja`)
+- Detección de tareas duplicadas
+- Feedback visual: mensaje en `#form-error` y botón "Añadir" deshabilitado cuando el formulario no es válido
+
+**JSDoc añadido** en todos los módulos con tipos personalizados (`Task`, `Priority`, `Category`).
+
+**tailwind.config.js** actualizado para incluir `./src/**/*.js` en el escaneo de clases.
+
+### Commits realizados
+
+| Hash | Mensaje |
+|------|---------|
+| `e5cf99b` | Refactor app into modules and add validation |
+| `18e438b` | Rebuild Tailwind output |
+
+### Aprendizaje
+
+Cursor no solo corrige bugs puntuales sino que puede proponer una arquitectura mejor para todo el proyecto. En este caso dividió un archivo monolítico en módulos con responsabilidades claras, lo que hace el código más fácil de mantener y entender. Es importante revisar manualmente cada cambio antes de aceptarlo para asegurarse de que no rompe nada.
 
 ## Conclusión
 
