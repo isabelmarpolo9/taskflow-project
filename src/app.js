@@ -7,10 +7,13 @@ import {
   loadTasks,
   removeTask,
   saveTasks,
+  sortByPriority,
+  toggleTask,
+  updateTask,
   validateTaskText
 } from './tasks.js'
 import { applyTheme, getInitialTheme, toggleTheme } from './theme.js'
-import { clearError, renderTaskList, showError } from './ui.js'
+import { clearError, renderTaskList, showError, updateCategoryCounters } from './ui.js'
 
 /** @type {HTMLInputElement} */
 const taskInput = document.getElementById('input-tarea')
@@ -28,10 +31,13 @@ const searchInput = document.getElementById('input-busqueda')
 const themeButton = document.getElementById('btn-tema')
 /** @type {HTMLParagraphElement} */
 const formError = document.getElementById('form-error')
+/** @type {HTMLButtonElement} */
+const sortButton = document.getElementById('btn-ordenar')
 
 /** @type {'todas' | import('./tasks.js').Category} */
 let activeCategory = 'todas'
 let activeQuery = ''
+let sortedByPriority = false
 
 /** @type {import('./tasks.js').Task[]} */
 let tasks = loadTasks()
@@ -55,17 +61,19 @@ function readAndValidateForm() {
 }
 
 function render() {
-  const visible = filterTasks(tasks, { category: activeCategory, query: activeQuery })
-  renderTaskList(taskContainer, visible, (id) => {
-    tasks = removeTask(tasks, id)
-    saveTasks(tasks)
-    render()
-  })
+  let visible = filterTasks(tasks, { category: activeCategory, query: activeQuery })
+  if (sortedByPriority) visible = sortByPriority(visible)
+  renderTaskList(
+    taskContainer,
+    visible,
+    (id) => { tasks = removeTask(tasks, id); saveTasks(tasks); render() },
+    (id) => { tasks = toggleTask(tasks, id); saveTasks(tasks); render() },
+    (id, newText) => { tasks = updateTask(tasks, id, newText); saveTasks(tasks); render() }
+  )
+  updateCategoryCounters(tasks)
 }
 
-/**
- * Sync UI state (disabled/error) with current form values.
- */
+/** Sync UI state (disabled/error) with current form values. */
 function updateFormState() {
   const result = readAndValidateForm()
   addButton.disabled = !result.ok
@@ -74,16 +82,13 @@ function updateFormState() {
   if (result.ok) clearError(formError)
 }
 
-/**
- * Handle "add task" action (button or Enter).
- */
+/** Handle "add task" action (button or Enter). */
 function onAddTask() {
   const result = readAndValidateForm()
   if (!result.ok) {
     showError(result.reason, formError)
     return
   }
-
   tasks.push(createTask(result.value))
   saveTasks(tasks)
   taskInput.value = ''
@@ -111,6 +116,16 @@ asideFilters.forEach((el) => {
   })
 })
 
+// Ordenar por prioridad
+if (sortButton) {
+  sortButton.addEventListener('click', () => {
+    sortedByPriority = !sortedByPriority
+    sortButton.textContent = sortedByPriority ? '🔽 Quitar orden' : '🔼 Ordenar por prioridad'
+    sortButton.classList.toggle('text-purple-400', sortedByPriority)
+    render()
+  })
+}
+
 // Form events
 addButton.addEventListener('click', onAddTask)
 taskInput.addEventListener('keydown', (e) => {
@@ -128,3 +143,4 @@ searchInput.addEventListener('input', () => {
 
 updateFormState()
 render()
+
