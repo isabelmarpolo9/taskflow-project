@@ -11,15 +11,13 @@ const TASKS_KEY = 'tareas'
  * @property {string} text
  * @property {Category} category
  * @property {Priority} priority
+ * @property {boolean} completed
  */
 
-/**
- * @returns {Task[]}
- */
+/** @returns {Task[]} */
 export function loadTasks() {
   const parsed = readJson(TASKS_KEY, [])
   if (!Array.isArray(parsed)) return []
-
   /** @type {Task[]} */
   const clean = []
   for (const item of parsed) {
@@ -29,30 +27,28 @@ export function loadTasks() {
     if (typeof t.text !== 'string') continue
     if (!isCategory(t.category)) continue
     if (!isPriority(t.priority)) continue
-    clean.push({ id: t.id, text: t.text, category: t.category, priority: t.priority })
+    clean.push({
+      id: t.id,
+      text: t.text,
+      category: t.category,
+      priority: t.priority,
+      completed: t.completed === true
+    })
   }
   return clean
 }
 
-/**
- * @param {Task[]} tasks
- */
+/** @param {Task[]} tasks */
 export function saveTasks(tasks) {
   writeJson(TASKS_KEY, tasks)
 }
 
-/**
- * @param {string} value
- * @returns {value is Priority}
- */
+/** @param {string} value @returns {value is Priority} */
 export function isPriority(value) {
   return value === 'alta' || value === 'media' || value === 'baja'
 }
 
-/**
- * @param {string} value
- * @returns {value is Category}
- */
+/** @param {string} value @returns {value is Category} */
 export function isCategory(value) {
   return value === 'trabajo' || value === 'estudio' || value === 'personal'
 }
@@ -104,7 +100,8 @@ export function createTask(input) {
     id: Date.now(),
     text: input.text,
     category: input.category,
-    priority: input.priority
+    priority: input.priority,
+    completed: false
   }
 }
 
@@ -116,3 +113,49 @@ export function createTask(input) {
 export function removeTask(tasks, id) {
   return tasks.filter(t => t.id !== id)
 }
+
+/**
+ * Alterna el estado completado de una tarea.
+ * @param {Task[]} tasks
+ * @param {number} id
+ * @returns {Task[]}
+ */
+export function toggleTask(tasks, id) {
+  return tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t)
+}
+
+/**
+ * Actualiza el texto de una tarea existente.
+ * @param {Task[]} tasks
+ * @param {number} id
+ * @param {string} newText
+ * @returns {Task[]}
+ */
+export function updateTask(tasks, id, newText) {
+  const validated = validateTaskText(newText, { min: 1, max: 120 })
+  if (!validated.ok) return tasks
+  return tasks.map(t => t.id === id ? { ...t, text: validated.value } : t)
+}
+
+/**
+ * Ordena las tareas por prioridad: alta → media → baja.
+ * @param {Task[]} tasks
+ * @returns {Task[]}
+ */
+export function sortByPriority(tasks) {
+  const order = { alta: 0, media: 1, baja: 2 }
+  return [...tasks].sort((a, b) => order[a.priority] - order[b.priority])
+}
+
+/**
+ * Devuelve el número de tareas por categoría.
+ * @param {Task[]} tasks
+ * @returns {Record<string, number>}
+ */
+export function countByCategory(tasks) {
+  return tasks.reduce((acc, t) => {
+    acc[t.category] = (acc[t.category] || 0) + 1
+    return acc
+  }, {})
+}
+
