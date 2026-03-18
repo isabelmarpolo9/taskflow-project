@@ -145,7 +145,7 @@ export function updateCategoryCounters(tasks) {
     let badge = el.querySelector('.count-badge')
     if (!badge) {
       badge = document.createElement('span')
-      badge.className = 'count-badge ml-auto text-xs bg-purple-900/40 text-purple-400 rounded-full px-1.5 hidden md:inline-block'
+      badge.className = 'count-badge ml-auto text-xs bg-purple-600 text-white rounded-full px-1.5 hidden md:inline-block'
       el.appendChild(badge)
     }
     const count = filtro === 'todas' ? tasks.length : (counts[filtro] ?? 0)

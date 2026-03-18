@@ -10,10 +10,13 @@ import {
   sortByPriority,
   toggleTask,
   updateTask,
-  validateTaskText
+  validateTaskText,
+  completeAllTasks,
+  removeCompletedTasks
 } from './tasks.js'
 import { applyTheme, getInitialTheme, toggleTheme } from './theme.js'
 import { clearError, renderTaskList, showError, updateCategoryCounters } from './ui.js'
+
 
 /** @type {HTMLInputElement} */
 const taskInput = document.getElementById('input-tarea')
@@ -140,7 +143,40 @@ searchInput.addEventListener('input', () => {
   activeQuery = searchInput.value
   render()
 })
+ // Completar todas
+const btnCompletarTodas = document.getElementById('btn-completar-todas')
+if (btnCompletarTodas) {
+  btnCompletarTodas.addEventListener('click', () => {
+    tasks = completeAllTasks(tasks)
+    saveTasks(tasks)
+    render()
+  })
+}
 
+// Borrar completadas
+const btnBorrarCompletadas = document.getElementById('btn-borrar-completadas')
+if (btnBorrarCompletadas) {
+  btnBorrarCompletadas.addEventListener('click', () => {
+    tasks = removeCompletedTasks(tasks)
+    saveTasks(tasks)
+    updateCategoryCounters(tasks)
+    updateStats()
+    render()
+  })
+}
 updateFormState()
 render()
 
+function updateStats() {
+  const total = tasks.length
+  const completadas = tasks.filter(t => t.completed).length
+  const pendientes = total - completadas
+
+  const statTotal = document.getElementById('stat-total')
+  const statCompletadas = document.getElementById('stat-completadas')
+  const statPendientes = document.getElementById('stat-pendientes')
+
+  if (statTotal) statTotal.textContent = String(total)
+  if (statCompletadas) statCompletadas.textContent = String(completadas)
+  if (statPendientes) statPendientes.textContent = String(pendientes)
+}

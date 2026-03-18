@@ -159,3 +159,20 @@ export function countByCategory(tasks) {
   }, {})
 }
 
+/**
+ * Marca todas las tareas como completadas.
+ * @param {Task[]} tasks
+ * @returns {Task[]}
+ */
+export function completeAllTasks(tasks) {
+  return tasks.map(t => ({ ...t, completed: true }))
+}
+
+/**
+ * Elimina todas las tareas completadas.
+ * @param {Task[]} tasks
+ * @returns {Task[]}
+ */
+export function removeCompletedTasks(tasks) {
+  return tasks.filter(t => !t.completed)
+}
