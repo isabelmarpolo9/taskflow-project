@@ -74,6 +74,7 @@ function render() {
     (id, newText) => { tasks = updateTask(tasks, id, newText); saveTasks(tasks); render() }
   )
   updateCategoryCounters(tasks)
+  updateStats()
 }
 
 /** Sync UI state (disabled/error) with current form values. */
