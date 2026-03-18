@@ -39,10 +39,10 @@ export function renderTaskList(container, tasks, onDelete, onToggle, onEdit) {
 
   for (const task of tasks) {
     const card = document.createElement('div')
-    card.className = `tarea flex items-center gap-4 bg-gray-900 border rounded-xl px-4 py-3 transition-all duration-200 hover:-translate-y-0.5 ${
+    card.className = `tarea flex items-center gap-4 bg-purple-100 dark:bg-gray-900 border rounded-xl px-4 py-3 transition-all duration-200 hover:-translate-y-0.5 ${
       task.completed
-        ? 'border-gray-700 opacity-60'
-        : 'border-gray-800 hover:border-purple-700'
+        ? 'border-gray-300 dark:border-gray-700 opacity-60'
+        : 'border-gray-200 dark:border-gray-800 hover:border-purple-400 dark:hover:border-purple-700'
     }`
     card.dataset.id = String(task.id)
 
@@ -59,9 +59,7 @@ export function renderTaskList(container, tasks, onDelete, onToggle, onEdit) {
     info.className = 'flex flex-col flex-1 min-w-0'
 
     const title = document.createElement('span')
-    title.className = `tarea-titulo text-sm ${task.completed ? 'line-through text-gray-500' : 'text-gray-200'}`
-    title.textContent = task.text
-
+    title.className = `tarea-titulo text-sm ${task.completed ? 'line-through text-gray-400 dark:text-gray-500' : 'text-gray-800 dark:text-gray-200'}`
     const category = document.createElement('span')
     category.className = 'text-xs text-gray-500 mt-0.5'
     category.textContent = task.category
