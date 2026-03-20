@@ -83,6 +83,7 @@ Consulta la carpeta [`docs/ai/`](./docs/ai/) para ver cómo se ha utilizado la I
 ## Despliegue
 
 - Ejercicio 2 (JS + LocalStorage): [taskflow-project-omega.vercel.app](https://taskflow-project-omega.vercel.app)
+<<<<<<< HEAD
 - Ejercicio 3 (Tailwind): [taskflow-project-git-feature-tailwind-isabelmarpolo9s-projects.vercel.app](https://taskflow-project-git-feature-tailwind-isabelmarpolo9s-projects.vercel.app)
 
 ## Diseño de la interfaz
@@ -96,3 +97,6 @@ La aplicación se divide en tres zonas principales:
 Cada tarjeta de tarea muestra el texto, la categoría, el badge de prioridad y los botones de completar, editar y eliminar.
 
 El diseño completo está en [`docs/design/wireframe.png`](./docs/design/wireframe.png).
+=======
+- Ejercicio 3 (Tailwind): [taskflow-project-git-feature-tailwind-isabelmarpolo9s-projects.vercel.app](https://taskflow-project-git-feature-tailwind-isabelmarpolo9s-projects.vercel.app)
+>>>>>>> docs/ai-documentation

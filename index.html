@@ -10,24 +10,23 @@
 <body class="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans min-h-screen">
 
     <!-- HEADER -->
-    <header class="bg-gray-900 border-b border-gray-800 px-4 py-3 flex items-center justify-between flex-wrap gap-2">
-        <div class="flex items-center gap-2">
+        <header class="bg-purple-200 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 py-3 flex items-center justify-between flex-wrap gap-2">        <div class="flex items-center gap-2">
             <span class="text-purple-400 text-xl">✦</span>
-            <h1 class="text-xl font-bold text-gray-100" style="font-family: 'Fraunces', serif;">
-                Gestión de Tareas
+            <h1 class="text-xl font-bold text-gray-900 dark:text-gray-100" style="font-family: 'Fraunces', serif;">
+                    Gestión de Tareas
             </h1>
         </div>
-        <button id="btn-tema" class="bg-gray-800 hover:bg-gray-700 text-gray-300 border border-gray-700 rounded-full px-3 py-1 text-sm cursor-pointer transition-all duration-200">
+        <button id="btn-tema" class="bg-purple-300 hover:bg-purple-200 text-purple-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 border border-purple-300 dark:border-gray-700 rounded-full px-3 py-1 text-sm cursor-pointer transition-all duration-200">
             🌙 Modo claro
         </button>
     </header>
+
 
     <!-- LAYOUT -->
     <div class="flex flex-col md:flex-row min-h-screen">
 
         <!-- ASIDE -->
-        <aside class="w-full md:w-56 bg-gray-900 border-b md:border-b-0 md:border-r border-gray-800 p-4 flex flex-row md:flex-col gap-4 md:gap-6 overflow-x-auto">
-            <div>
+            <aside class="w-full md:w-56 bg-purple-100 dark:bg-gray-900 border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-800 p-4 flex flex-row md:flex-col gap-4 md:gap-6 overflow-x-auto">            <div>
                 <p class="hidden md:block text-xs font-bold uppercase tracking-widest text-gray-600">Mis listas</p>
                 <ul class="flex flex-row md:flex-col gap-1 md:gap-1 w-full">
                     <li class="filtro-aside active flex flex-col items-center md:flex-row gap-1 md:gap-2 px-3 py-2 rounded-md text-gray-400 cursor-pointer transition-all duration-200 hover:bg-purple-900/20 hover:text-purple-400" data-filtro="todas">
@@ -52,8 +51,46 @@
 
         <!-- MAIN -->
         <main class="flex-1 p-8">
-            <section>
-                <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-6">En progreso</h2>
+
+                <!-- ESTADÍSTICAS -->
+                <div class="grid grid-cols-3 gap-4 px-8 py-4 pb-8 bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800">
+                    <div class="bg-purple-50 dark:bg-gray-900 border border-purple-200 dark:border-gray-800 rounded-xl p-4 text-center">
+                        <p id="stat-total" class="text-3xl font-bold text-purple-700 dark:text-purple-400">0</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium uppercase tracking-wide">Total</p>
+                    </div>
+                    <div class="bg-green-50 dark:bg-gray-900 border border-green-200 dark:border-gray-800 rounded-xl p-4 text-center">
+                        <p id="stat-completadas" class="text-3xl font-bold text-green-600 dark:text-green-400">0</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium uppercase tracking-wide">Completadas</p>
+                    </div>
+                    <div class="bg-orange-50 dark:bg-gray-900 border border-orange-200 dark:border-gray-800 rounded-xl p-4 text-center">
+                        <p id="stat-pendientes" class="text-3xl font-bold text-orange-500 dark:text-orange-400">0</p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium uppercase tracking-wide">Pendientes</p>
+                    </div>
+                </div>
+        
+            <section class="mt-6">
+                <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+                    
+                    <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-200">En progreso</h2>
+                    <button
+                        id="btn-ordenar"
+                        class="bg-purple-100 hover:bg-purple-200 text-purple-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 border border-purple-300 dark:border-gray-700 rounded-lg px-3 py-1.5 text-xs font-medium cursor-pointer transition-all duration-200"
+                    >
+                        ↕ Ordenar por prioridad
+                    </button>
+                    <button
+                        id="btn-completar-todas"
+                        class="bg-purple-100 hover:bg-purple-200 text-purple-700 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-gray-300 border border-purple-300 dark:border-gray-700 rounded-lg px-3 py-1.5 text-xs font-medium cursor-pointer transition-all duration-200"
+                    >
+                        ✓ Completar todas
+                    </button>
+                    <button
+                        id="btn-borrar-completadas"
+                        class="bg-red-50 hover:bg-red-100 text-red-600 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-red-400 border border-red-200 dark:border-gray-700 rounded-lg px-3 py-1.5 text-xs font-medium cursor-pointer transition-all duration-200"
+                    >
+                        🗑 Borrar completadas
+                    </button>
+                </div>
                 
 
                 <!-- BUSCADOR -->
@@ -62,8 +99,7 @@
                         type="text" 
                         id="input-busqueda" 
                         placeholder="Buscar tarea..." 
-                        class="bg-gray-900 border border-gray-700 text-gray-200 rounded-xl px-4 py-2 text-sm outline-none w-72 transition-all duration-200 focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
-                    >
+                    class="bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl px-4 py-2 text-sm outline-none w-72 transition-all duration-200 focus:border-purple-500 focus:ring-1 focus:ring-purple-500"                    >
                 </div>
 
                 <!-- FORMULARIO -->
@@ -72,11 +108,15 @@
                         type="text" 
                         id="input-tarea" 
                         placeholder="¿Qué hay que hacer?" 
-                        class="bg-gray-900 border border-gray-700 text-gray-200 rounded-xl px-4 py-2 text-sm outline-none flex-1 min-w-48 transition-all duration-200 focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                        minlength="1"
+                        maxlength="120"
+                        autocomplete="off"
+                        inputmode="text"
+                        class="bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl px-4 py-2 text-sm outline-none flex-1 min-w-48 transition-all duration-200 focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
                     >
                     <select 
                         id="select-categoria" 
-                        class="bg-gray-900 border border-gray-700 text-gray-200 rounded-xl px-4 py-2 text-sm outline-none cursor-pointer transition-all duration-200 focus:border-purple-500"
+                        class="bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-xl px-4 py-2 text-sm outline-none cursor-pointer transition-all duration-200 focus:border-purple-500"
                     >
                         <option value="trabajo">Trabajo</option>
                         <option value="estudio">Estudio</option>
@@ -84,7 +124,7 @@
                     </select>
                     <select 
                         id="select-prioridad" 
-                        class="bg-gray-900 border border-gray-700 text-gray-200 rounded-xl px-4 py-2 text-sm outline-none cursor-pointer transition-all duration-200 focus:border-purple-500"
+                        class="bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 rounded-xl px-4 py-2 text-sm outline-none cursor-pointer transition-all duration-200 focus:border-purple-500"
                     >
                         <option value="alta">Alta</option>
                         <option value="media">Media</option>
@@ -92,11 +132,14 @@
                     </select>
                     <button 
                         id="btn-añadir" 
-                        class="bg-purple-600 hover:bg-purple-500 text-white rounded-xl px-5 py-2 text-sm font-medium cursor-pointer transition-all duration-200 hover:-translate-y-0.5"
+                        class="bg-purple-700 hover:bg-purple-600 text-white rounded-xl px-5 py-2 text-sm font-medium cursor-pointer transition-all duration-200 hover:-translate-y-0.5"
                     >
                         Añadir tarea
                     </button>
                 </div>
+
+                <!-- MENSAJES DE VALIDACIÓN -->
+                <p id="form-error" class="hidden text-sm text-red-400 mb-6" role="status" aria-live="polite"></p>
 
                 <!-- CONTENEDOR TAREAS -->
                 <div id="contenedor-tareas" class="flex flex-col gap-3"></div>
@@ -106,6 +149,6 @@
 
     </div>
 
-    <script src="app.js"></script>
+    <script type="module" src="src/app.js"></script>
 </body>
 </html>
