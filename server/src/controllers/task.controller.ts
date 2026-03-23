@@ -8,7 +8,12 @@ export function getAll(req: Request, res: Response): void {
 }
 
 export function getOne(req: Request, res: Response): void {
-  const task = taskService.getTaskById(req.params.id)
+  const id = String(req.params['id'])
+  if (!id) {
+    res.status(400).json({ error: 'ID no proporcionado' })
+    return
+  }
+  const task = taskService.getTaskById(id)
   if (!task) {
     res.status(404).json({ error: 'Tarea no encontrada' })
     return
@@ -27,12 +32,17 @@ export function create(req: Request, res: Response): void {
 }
 
 export function update(req: Request, res: Response): void {
-  const result = updateTaskSchema.safeParse(req.body)
+  const id = String(req.params['id'])
+if (!id) {
+  res.status(400).json({ error: 'ID no proporcionado' })
+  return
+}
+    const result = updateTaskSchema.safeParse(req.body)
   if (!result.success) {
     res.status(400).json({ error: result.error.flatten() })
     return
   }
-  const task = taskService.updateTask(req.params.id, result.data)
+  const task = taskService.updateTask(id, result.data)
   if (!task) {
     res.status(404).json({ error: 'Tarea no encontrada' })
     return
@@ -41,7 +51,12 @@ export function update(req: Request, res: Response): void {
 }
 
 export function remove(req: Request, res: Response): void {
-  const deleted = taskService.deleteTask(req.params.id)
+  const id = String(req.params['id'])
+if (!id) {
+  res.status(400).json({ error: 'ID no proporcionado' })
+  return
+}
+    const deleted = taskService.deleteTask(id)
   if (!deleted) {
     res.status(404).json({ error: 'Tarea no encontrada' })
     return
