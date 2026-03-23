@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
   res.json({ message: 'API de TaskFlow funcionando' })
 })
 
-app.use('/api/tasks', taskRoutes)
+app.use('/api/v1/tasks', taskRoutes)
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`)
