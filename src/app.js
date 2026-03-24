@@ -87,6 +87,7 @@ function render() {
     visible,
     async (id) => {
   try {
+    console.log('Eliminando tarea con id:', id)
     await deleteTaskAPI(id)
     tasks = tasks.filter(t => t.id !== id)
     render()

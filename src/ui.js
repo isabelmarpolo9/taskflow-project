@@ -104,8 +104,8 @@ export function renderTaskList(container, tasks, onDelete, onToggle, onEdit) {
   container.onclick = (e) => {
     const target = /** @type {HTMLElement} */ (e.target)
     const card = target.closest('.tarea')
-    const id = Number(card?.dataset?.id)
-    if (!Number.isFinite(id)) return
+    const id = card?.dataset?.id
+    if (!id) return
 
     if (target.dataset.action === 'delete') {
       onDelete(id)
