@@ -84,3 +84,7 @@ Consulta la carpeta [`docs/ai/`](./docs/ai/) para ver cómo se ha utilizado la I
 
 - Ejercicio 2 (JS + LocalStorage): [taskflow-project-omega.vercel.app](https://taskflow-project-omega.vercel.app)
 - Ejercicio 3 (Tailwind): [taskflow-project-git-feature-tailwind-isabelmarpolo9s-projects.vercel.app](https://taskflow-project-git-feature-tailwind-isabelmarpolo9s-projects.vercel.app)
+
+## Backend
+
+El proyecto incluye una API REST construida con Express y TypeScript en la carpeta `server/`. Consulta [`server/README.md`](./server/README.md) para la documentación técnica completa.
