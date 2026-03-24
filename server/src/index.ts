@@ -24,6 +24,8 @@ app.use('/api/v1/tasks', taskRoutes)
 
 app.use(errorHandler)
 
-app.listen(PORT, () => {
-  console.log(`Servidor corriendo en http://localhost:${PORT}`)
-})
+//app.listen(PORT, () => {
+//  console.log(`Servidor corriendo en http://localhost:${PORT}`)
+//})
+
+export default app
