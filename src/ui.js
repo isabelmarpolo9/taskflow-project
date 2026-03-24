@@ -60,6 +60,7 @@ export function renderTaskList(container, tasks, onDelete, onToggle, onEdit) {
 
     const title = document.createElement('span')
     title.className = `tarea-titulo text-sm ${task.completed ? 'line-through text-gray-400 dark:text-gray-500' : 'text-gray-800 dark:text-gray-200'}`
+    title.textContent = task.text ?? task.title ?? ''
     const category = document.createElement('span')
     category.className = 'text-xs text-gray-500 mt-0.5'
     category.textContent = task.category
