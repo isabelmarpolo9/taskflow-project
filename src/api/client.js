@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000/api/v1'
+const BASE_URL = window.location.origin + '/api/v1'
 
 function serverToClient(task) {
   const result = Object.assign({}, task)
