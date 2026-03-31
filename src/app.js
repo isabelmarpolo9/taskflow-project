@@ -4,8 +4,6 @@ import {
   hasDuplicateTask,
   isCategory,
   isPriority,
-  loadTasks,
-  removeTask,
   saveTasks,
   sortByPriority,
   toggleTask,
@@ -16,6 +14,7 @@ import {
 } from './tasks.js'
 import { applyTheme, getInitialTheme, toggleTheme } from './theme.js'
 import { clearError, renderTaskList, showError, updateCategoryCounters } from './ui.js'
+import { getTasks, createTask as createTaskAPI, deleteTask as deleteTaskAPI, updateTask as updateTaskAPI } from './api/client.js'
 
 
 /** @type {HTMLInputElement} */
@@ -43,7 +42,24 @@ let activeQuery = ''
 let sortedByPriority = false
 
 /** @type {import('./tasks.js').Task[]} */
-let tasks = loadTasks()
+let tasks = []
+async function loadTasksFromServer() {
+  const estadoCarga = document.getElementById('estado-carga')
+  const estadoError = document.getElementById('estado-error')
+  
+  estadoCarga.classList.remove('hidden')
+  estadoError.classList.add('hidden')
+  
+  try {
+    tasks = await getTasks()
+    estadoCarga.classList.add('hidden')
+    render()
+  } catch (err) {
+    estadoCarga.classList.add('hidden')
+    estadoError.classList.remove('hidden')
+    console.error('Error cargando tareas:', err)
+  }
+}
 
 /**
  * @returns {{ ok: true; value: { text: string; category: import('./tasks.js').Category; priority: import('./tasks.js').Priority } } | { ok: false; reason: string }}
@@ -69,9 +85,36 @@ function render() {
   renderTaskList(
     taskContainer,
     visible,
-    (id) => { tasks = removeTask(tasks, id); saveTasks(tasks); render() },
-    (id) => { tasks = toggleTask(tasks, id); saveTasks(tasks); render() },
-    (id, newText) => { tasks = updateTask(tasks, id, newText); saveTasks(tasks); render() }
+    async (id) => {
+  try {
+    console.log('Eliminando tarea con id:', id)
+    await deleteTaskAPI(id)
+    tasks = tasks.filter(t => t.id !== id)
+    render()
+  } catch (err) {
+    console.error('Error al eliminar tarea:', err)
+  }
+},
+    async (id) => {
+  try {
+    const task = tasks.find(t => t.id === id)
+    if (!task) return
+    await updateTaskAPI(id, { completed: !task.completed })
+    tasks = toggleTask(tasks, id)
+    render()
+  } catch (err) {
+    console.error('Error al actualizar tarea:', err)
+  }
+},
+    async (id, newText) => {
+  try {
+    await updateTaskAPI(id, { text: newText })
+    tasks = updateTask(tasks, id, newText)
+    render()
+  } catch (err) {
+    console.error('Error al editar tarea:', err)
+  }
+}
   )
   updateCategoryCounters(tasks)
   updateStats()
@@ -87,18 +130,29 @@ function updateFormState() {
 }
 
 /** Handle "add task" action (button or Enter). */
-function onAddTask() {
+async function onAddTask() {
   const result = readAndValidateForm()
   if (!result.ok) {
     showError(result.reason, formError)
     return
   }
-  tasks.push(createTask(result.value))
-  saveTasks(tasks)
-  taskInput.value = ''
-  clearError(formError)
-  updateFormState()
-  render()
+
+  try {
+    const newTask = await createTaskAPI({
+  title: result.value.text,
+  category: result.value.category,
+  priority: result.value.priority === 'alta' ? 'high' : result.value.priority === 'media' ? 'medium' : 'low',
+  completed: false
+})
+    tasks.push(newTask)
+    taskInput.value = ''
+    clearError(formError)
+    updateFormState()
+    updateStats()
+    render()
+  } catch (err) {
+    showError('Error al crear la tarea', formError)
+  }
 }
 
 // Init: theme
@@ -166,7 +220,8 @@ if (btnBorrarCompletadas) {
   })
 }
 updateFormState()
-render()
+updateFormState()
+loadTasksFromServer()
 
 function updateStats() {
   const total = tasks.length
